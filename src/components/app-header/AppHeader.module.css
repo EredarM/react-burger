@@ -1,0 +1,20 @@
+.header {
+    width: 100%;
+    height: 100%;
+    background-color: #1c1c21;
+}
+
+.header__nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav__ul_left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav__ul_right {
+    display: flex;
+    justify-content: flex-end;
+}
