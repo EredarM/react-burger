@@ -1,0 +1,11 @@
+.nav__element {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+    height: 100%;
+
+    text-decoration: none;
+    color: inherit;
+}

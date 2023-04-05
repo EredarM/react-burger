@@ -1,0 +1,18 @@
+.header {
+    background-color: #1c1c21;
+}
+
+.header__nav_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav__ul_left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav__ul_right {
+    display: flex;
+    justify-content: flex-end;
+}

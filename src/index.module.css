@@ -1,0 +1,24 @@
+:root {
+    --width-container: 1200px;
+}
+
+.header__container {
+    width: calc(var(--width-container) + (20px * 2));
+    margin: 0 auto;
+}
+
+.container {
+    width: var(--width-container);
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.section__scrollWrapper {
+    overflow: hidden;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
