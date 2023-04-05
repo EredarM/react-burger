@@ -1,0 +1,8 @@
+.main {
+    height: calc(100% - 100px);
+}
+
+.main__wrapper {
+    display: flex;
+    gap: 40px;
+}

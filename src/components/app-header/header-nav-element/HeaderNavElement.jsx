@@ -1,9 +1,9 @@
 import React from "react";
 
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './ElementMenu.module.css';
+import styles from './HeaderNavElement.module.css';
 
-class ElementMenu extends React.Component {
+class HeaderNavElement extends React.Component {
     getIcon = (iconType) => {
         let result;
         switch (iconType) {
@@ -17,7 +17,7 @@ class ElementMenu extends React.Component {
                 result = (<ProfileIcon type={'primary'}/>);
                 break;
             default:
-                throw '';
+                result = '';
         }
         return result;
     }
@@ -25,7 +25,7 @@ class ElementMenu extends React.Component {
     render() {
         const {iconType, text} = this.props;
         return (
-            <span className={`${styles.element} pl-5 pr-5`}>
+            <span className={`${styles.element} text text_type_main-default pl-5 pr-5`}>
                 {this.getIcon(iconType)}
                 {text}
             </span>
@@ -33,4 +33,4 @@ class ElementMenu extends React.Component {
     }
 }
 
-export default ElementMenu;
+export default HeaderNavElement;
