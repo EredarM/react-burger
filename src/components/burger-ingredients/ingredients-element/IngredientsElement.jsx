@@ -53,10 +53,10 @@ const IngredientsElement = (props) => {
 }
 
 IngredientsElement.propTypes = {
-    type: PropTypes.string,
-    imgPath: PropTypes.string,
-    price: PropTypes.string,
-    title: PropTypes.string
+    type: PropTypes.string.isRequired,
+    imgPath: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired
 }
 
 export default IngredientsElement;

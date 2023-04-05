@@ -18,9 +18,9 @@ const ConstructorCartElement = (props) => {
 }
 
 ConstructorCartElement.propTypes = {
-    imgPath: PropTypes.string,
-    price: PropTypes.string,
-    title: PropTypes.string
+    imgPath: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired
 }
 
 export default ConstructorCartElement;

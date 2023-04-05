@@ -24,12 +24,14 @@ const ConstructorElement = (props) => {
 }
 
 ConstructorElement.propTypes = {
-    data: PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        image: PropTypes.string,
-    })
+    data: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired,
+            image: PropTypes.string.isRequired,
+        }).isRequired
+    )
 }
 
 export default ConstructorElement;

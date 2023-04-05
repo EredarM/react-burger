@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from './HeaderNavElement.module.css';
@@ -28,6 +30,11 @@ const HeaderNavElement = (props) => {
             {text}
         </a>
     );
+}
+
+HeaderNavElement.propTypes = {
+    iconType: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
 }
 
 export default HeaderNavElement;
