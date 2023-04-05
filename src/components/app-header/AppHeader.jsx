@@ -4,7 +4,7 @@ import HeaderNavElement from "./header-nav-element/HeaderNavElement";
 import styles from './AppHeader.module.css';
 import global from '../../index.module.css';
 
-function AppHeader() {
+const AppHeader = () => {
     return (
         <header className={`${styles.header}`}>
             <nav className={`pt-4 pb-4`}>
