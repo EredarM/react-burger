@@ -1,7 +1,7 @@
 import {Logo} from '@ya.praktikum/react-developer-burger-ui-components'
-import HeaderNavElement from "./header-nav-element/HeaderNavElement";
+import HeaderNavElement from "./header-nav-element/header-nav-element";
 
-import styles from './AppHeader.module.css';
+import styles from './app-header.module.css';
 import global from '../../index.module.css';
 
 const AppHeader = () => {

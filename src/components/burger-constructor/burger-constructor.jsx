@@ -1,10 +1,8 @@
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientsElement from "./ingredients-element/IngredientsElement";
+import BurgerConstructorDetails from "./burger-constructor-details/burger-constructor-details";
 
-import styles from './BurgerIngredients.module.css';
+import styles from './burger-constructor.module.css';
 import global from '../../index.module.css';
-
-import data from '../../utils/data';
 
 const getType = (currentIndex, dataLength) => {
     let result;
@@ -18,7 +16,7 @@ const getType = (currentIndex, dataLength) => {
     return result;
 }
 
-const BurgerIngredients = () => {
+const BurgerConstructor = ({data}) => {
     return (
         <section className={`${styles.main__section_rigth} pt-25`}>
             <div className={global.section__scrollWrapper}>
@@ -28,7 +26,7 @@ const BurgerIngredients = () => {
                             return (
                                 <li key={item._id}>
                                     {
-                                        <IngredientsElement
+                                        <BurgerConstructorDetails
                                             type={getType(index, data.length)}
                                             imgPath={item.image}
                                             price={item.price}
@@ -43,7 +41,9 @@ const BurgerIngredients = () => {
             <div className={styles.bottom}>
                 <div className={`${styles.bottom__priceWrapper} mb-1`}>
                         <span
-                            className={`text text_type_digits-medium`}>{data.map(item => item.price).reduce((sum, currentValue) => sum + currentValue, 0)}</span>
+                            className={`text text_type_digits-medium`}>
+                            {data.map(item => item.price).reduce((sum, currentValue) => sum + currentValue, 0)}
+                        </span>
                     <CurrencyIcon type={'primary'}/>
                 </div>
                 <Button htmlType="button" type="primary" size="medium">
@@ -55,4 +55,4 @@ const BurgerIngredients = () => {
     );
 }
 
-export default BurgerIngredients;
+export default BurgerConstructor;

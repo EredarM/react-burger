@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import styles from './ConstructorCartElement.module.css';
+import styles from './burger-ingredient-details.module.css';
 
-const ConstructorCartElement = (props) => {
+const BurgerIngredientDetails = (props) => {
     return (
         <>
             <img className={`${styles.item__img} mb-1`} src={props.imgPath}
@@ -17,10 +17,10 @@ const ConstructorCartElement = (props) => {
     );
 }
 
-ConstructorCartElement.propTypes = {
+BurgerIngredientDetails.propTypes = {
     imgPath: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired
 }
 
-export default ConstructorCartElement;
+export default BurgerIngredientDetails;

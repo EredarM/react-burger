@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import styles from './HeaderNavElement.module.css';
+import styles from './header-nav-element.module.css';
 
 const getIcon = (iconType) => {
     let result;
