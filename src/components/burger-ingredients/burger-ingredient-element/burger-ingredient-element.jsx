@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import styles from './burger-ingredient-details.module.css';
+import styles from './burger-ingredient-element.module.css';
 
-const BurgerIngredientDetails = (props) => {
+const BurgerIngredientElement = (props) => {
     return (
         <>
             <img className={`${styles.item__img} mb-1`} src={props.imgPath}
@@ -17,10 +17,10 @@ const BurgerIngredientDetails = (props) => {
     );
 }
 
-BurgerIngredientDetails.propTypes = {
+BurgerIngredientElement.propTypes = {
     imgPath: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired
 }
 
-export default BurgerIngredientDetails;
+export default BurgerIngredientElement;

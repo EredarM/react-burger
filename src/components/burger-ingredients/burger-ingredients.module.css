@@ -7,6 +7,10 @@
     display: flex;
 }
 
+.section__btnContainer_item {
+    flex-grow: 1;
+}
+
 .section__btnContainer_btn {
     display: block;
     padding: 16px 78px;

@@ -7,12 +7,11 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
 import global from "../../index.module.css";
 
-
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 const App = () => {
     const [data, setData] = React.useState();
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false);
 
     React.useEffect(
         () => {
@@ -29,7 +28,7 @@ const App = () => {
                 .catch(() => alert("ERROR loading"));
         },
         []
-    )
+    );
 
     return (
         <>
@@ -44,6 +43,7 @@ const App = () => {
                     </main>
                 )
             }
+            <div id="react-modals"></div>
         </>
     );
 }

@@ -42,7 +42,7 @@ const getElement = (type, imgPath, price, title) => {
     return result;
 }
 
-const BurgerConstructorDetails = (props) => {
+const BurgerConstructorElement = (props) => {
     const {type, imgPath, price, title} = props;
 
     return (
@@ -52,11 +52,11 @@ const BurgerConstructorDetails = (props) => {
     );
 }
 
-BurgerConstructorDetails.propTypes = {
+BurgerConstructorElement.propTypes = {
     type: PropTypes.string.isRequired,
     imgPath: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired
 }
 
-export default BurgerConstructorDetails;
+export default BurgerConstructorElement;

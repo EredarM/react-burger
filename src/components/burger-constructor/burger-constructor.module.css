@@ -11,6 +11,10 @@
     gap: 16px;
 }
 
+.content__li {
+    cursor: pointer;
+}
+
 .bottom {
     width: 100%;
     display: flex;
