@@ -26,7 +26,7 @@ const BurgerIngredientNav = ({tabs}) => {
             <ul className={`${styles.section__btnContainer}`}>
                 {
                     tabs.map(item => (
-                        <li className={`${styles.section__btnContainer_item}`}>
+                        <li key={item.code} className={`${styles.section__btnContainer_item}`}>
                             <Tab key={item.code} value={item.code} active={current === item.code}
                                  onClick={handleTabClick}>
                                 {item.ruCode}
