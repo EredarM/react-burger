@@ -3,11 +3,10 @@ import React from "react";
 import AppHeader from "../../components/app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+import {getIngredients} from '../../utils/burger-api';
 
 import styles from "./app.module.css";
 import global from "../../index.module.css";
-
-const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 const App = () => {
     const [data, setData] = React.useState();
@@ -15,17 +14,16 @@ const App = () => {
 
     React.useEffect(
         () => {
-            fetch(DATA_URL)
-                .then(response => response.json())
+            getIngredients()
                 .then(response => {
                     if (response.success) {
                         setData(response.data);
                         setLoading(true)
                     } else {
-                        throw new SyntaxError("Данные некорректны");
+                        throw new Error();
                     }
                 })
-                .catch(() => alert("ERROR loading"));
+                .catch(() => alert("Ошибка загрузка данных"));
         },
         []
     );
@@ -43,7 +41,6 @@ const App = () => {
                     </main>
                 )
             }
-            <div id="react-modals"></div>
         </>
     );
 }

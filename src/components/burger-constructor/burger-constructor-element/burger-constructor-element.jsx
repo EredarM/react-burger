@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import {dataProps2} from "../../../utils/prop-types";
 
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -42,9 +42,7 @@ const getElement = (type, imgPath, price, title) => {
     return result;
 }
 
-const BurgerConstructorElement = (props) => {
-    const {type, imgPath, price, title} = props;
-
+const BurgerConstructorElement = ({type, imgPath, price, title}) => {
     return (
         <>
             {getElement(type, imgPath, price, title)}
@@ -52,11 +50,6 @@ const BurgerConstructorElement = (props) => {
     );
 }
 
-BurgerConstructorElement.propTypes = {
-    type: PropTypes.string.isRequired,
-    imgPath: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired
-}
+BurgerConstructorElement.propTypes = dataProps2;
 
 export default BurgerConstructorElement;

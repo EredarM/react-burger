@@ -22,8 +22,7 @@ const getIcon = (iconType) => {
     return result;
 }
 
-const HeaderNavElement = (props) => {
-    const {iconType, text} = props;
+const HeaderNavElement = ({iconType, text}) => {
     return (
         <a href={'#'} className={`${styles.nav__element} text text_type_main-default pl-5 pr-5`}>
             {getIcon(iconType)}
