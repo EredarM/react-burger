@@ -1,8 +1,9 @@
 const NORMA_API = 'https://norma.nomoreparties.space/api';
 
-export function getIngredients() {
+export function getIngredients(dispatchCallBack) {
     return fetch(`${NORMA_API}/ingredients`)
-        .then(checkResponse);
+        .then(checkResponse)
+        .then(dispatchCallBack);
 }
 
 const checkResponse = (res) => {

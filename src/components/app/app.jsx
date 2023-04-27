@@ -1,29 +1,22 @@
 import React from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 import AppHeader from "../../components/app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {getIngredients} from '../../utils/burger-api';
+import {getBurgerIngredients} from "../../services/actions/burger-ingredients";
 
 import styles from "./app.module.css";
 import global from "../../index.module.css";
 
 const App = () => {
-    const [data, setData] = React.useState();
-    const [loading, setLoading] = React.useState(false);
-
+    const dispatch = useDispatch();
+    const {burgerIngredientsRequestSuccess} = useSelector(store => store.burgerIngredients);
     React.useEffect(
         () => {
-            getIngredients()
-                .then(response => {
-                    if (response.success) {
-                        setData(response.data);
-                        setLoading(true)
-                    } else {
-                        throw new Error();
-                    }
-                })
-                .catch(() => alert("Ошибка загрузка данных"));
+            dispatch(getBurgerIngredients())
         },
         []
     );
@@ -32,11 +25,13 @@ const App = () => {
         <>
             <AppHeader/>
             {
-                loading && (
+                burgerIngredientsRequestSuccess && (
                     <main className={`${styles.main} pb-10`}>
                         <div className={`${global.container} ${styles.main__wrapper}`}>
-                            <BurgerIngredients data={data}/>
-                            <BurgerConstructor data={data}/>
+                            <DndProvider backend={HTML5Backend}>
+                                <BurgerIngredients/>
+                                <BurgerConstructor/>
+                            </DndProvider>
                         </div>
                     </main>
                 )

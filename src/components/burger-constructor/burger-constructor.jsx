@@ -1,52 +1,86 @@
 import React from "react";
-
+import {useDrop} from "react-dnd";
+import {useDispatch, useSelector} from "react-redux";
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerConstructorElement from "./burger-constructor-element/burger-constructor-element";
+
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import {dataProps} from "../../utils/prop-types";
+import {addOrderModalData, removeOrderModalData} from "../../services/actions/order-modal";
+import {addIngredient} from "../../services/actions/burger-constructor";
 
 import styles from './burger-constructor.module.css';
 import global from '../../index.module.css';
 
+const BurgerConstructor = () => {
+    const dispatch = useDispatch();
+    const {isOpen} = useSelector(state => state.orderModalReducer)
 
-const getType = (currentIndex, dataLength) => {
-    let result;
-    if (currentIndex === 0) {
-        result = 'start';
-    } else if (currentIndex === dataLength - 1) {
-        result = 'end';
-    } else {
-        result = 'middle';
-    }
-    return result;
-}
+    const {bun, ingredients} = useSelector(store => store.burgerConstructor);
+    const ingredientsData = useSelector(store => store.burgerIngredients.data);
 
-const BurgerConstructor = ({data}) => {
-    const [orderModalData, setOrderModalData] = React.useState(false);
+    const ingredientsRender = React.useMemo(
+        () => ingredients.map(item => ({
+            id: item.uniqueId,
+            data: ingredientsData.find(i => i._id === item.itemId)
+        })),
+        [ingredients]
+    );
 
-    const handleOpenOrderModal = () => setOrderModalData(true);
+    const bunRender = React.useMemo(
+        () => ingredientsData.find(i => i._id === bun.itemId),
+        [bun]
+    );
 
-    const handleCloseOrderModal = () => setOrderModalData(false);
+    const handleOpenOrderModal = () => dispatch(addOrderModalData());
+    const handleCloseOrderModal = () => dispatch(removeOrderModalData());
+
+    const [, dropTarget] = useDrop({
+        accept: 'ingredient',
+        drop(item) {
+            dispatch(addIngredient(item));
+        }
+    });
 
     return (
         <section className={`${styles.main__section_rigth} pt-25`}>
             <div className={global.section__scrollWrapper}>
-                <ul className={`${styles.content__ul} pl-4 pr-4`}>
+                <ul ref={dropTarget} className={`${styles.content__ul} pl-10 pr-4`}>
                     {
-                        data.map((item, index) => {
+                        bunRender &&
+                        (
+                            <BurgerConstructorElement
+                                id={bunRender._id}
+                                type={'start'}
+                                imgPath={bunRender.image}
+                                price={bunRender.price}
+                                title={bunRender.name}/>
+                        )
+                    }
+                    {
+                        ingredientsRender.map((item, index) => {
                             return (
-                                <li key={item._id} className={styles.content__li}>
-                                    {
-                                        <BurgerConstructorElement
-                                            type={getType(index, data.length)}
-                                            imgPath={item.image}
-                                            price={item.price}
-                                            title={item.name}/>
-                                    }
-                                </li>
+                                <BurgerConstructorElement
+                                    id={item.id}
+                                    key={item.id}
+                                    index={index}
+                                    type={'middle'}
+                                    imgPath={item.data.image}
+                                    price={item.data.price}
+                                    title={item.data.name}/>
                             );
                         })
+                    }
+                    {
+                        bunRender &&
+                        (
+                            <BurgerConstructorElement
+                                id={bunRender._id}
+                                type={'end'}
+                                imgPath={bunRender.image}
+                                price={bunRender.price}
+                                title={bunRender.name}/>
+                        )
                     }
                 </ul>
             </div>
@@ -54,7 +88,7 @@ const BurgerConstructor = ({data}) => {
                 <div className={`${styles.bottom__priceWrapper} mb-1`}>
                         <span
                             className={`text text_type_digits-medium`}>
-                            {data.map(item => item.price).reduce((sum, currentValue) => sum + currentValue, 0)}
+                            {ingredientsRender.map(item => item.data.price).reduce((sum, currentValue) => sum + currentValue, 0)}
                         </span>
                     <CurrencyIcon type={'primary'}/>
                 </div>
@@ -62,7 +96,7 @@ const BurgerConstructor = ({data}) => {
                     Оформить заказ
                 </Button>
             </div>
-            {orderModalData &&
+            {isOpen &&
                 <Modal onClose={handleCloseOrderModal}>
                     <OrderDetails/>
                 </Modal>
@@ -70,7 +104,5 @@ const BurgerConstructor = ({data}) => {
         </section>
     );
 }
-
-BurgerConstructor.propTypes = dataProps;
 
 export default BurgerConstructor;

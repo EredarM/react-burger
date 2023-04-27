@@ -1,64 +1,60 @@
 import React from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch, useSelector} from "react-redux";
+import {useInView} from 'react-intersection-observer';
+
 
 import BurgerIngredientElements from "./burger-ingredient-elements/burger-ingredient-elements";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import {addIngredientModalData, removeIngredientModalData} from "../../services/actions/ingredient-modal";
 
 import styles from './burger-ingredients.module.css';
 import global from '../../index.module.css';
 
-const BurgerIngredientNav = ({tabs}) => {
-    const [current, setCurrent] = React.useState('bun');
-
-    const handleTabClick = (e) => setCurrent(e);
-
-    React.useEffect(
-        () => {
-            const target = document.querySelector(`#${current}`);
-            target.scrollIntoView();
-        },
-        [current]
-    );
-
-    return (
-        <nav className={`mb-10`}>
-            <ul className={`${styles.section__btnContainer}`}>
-                {
-                    tabs.map(item => (
-                        <li key={item.code} className={`${styles.section__btnContainer_item}`}>
-                            <Tab key={item.code} value={item.code} active={current === item.code}
-                                 onClick={handleTabClick}>
-                                {item.ruCode}
-                            </Tab>
-                        </li>
-                    ))
-                }
-            </ul>
-        </nav>
-    );
-}
-
-const BurgerIngredients = ({data}) => {
+const BurgerIngredients = () => {
     const tabs = [
         {code: 'bun', ruCode: 'Булки'},
         {code: 'sauce', ruCode: 'Соусы'},
         {code: 'main', ruCode: 'Начинки'}
     ];
 
-    const [ingredientModalData, setIngredientModalData] = React.useState(null);
+    const dispatch = useDispatch();
 
-    const handleOpenModal = (item) => {
-        setIngredientModalData({
-            name: item.name,
-            image_large: item.image_large,
-            calories: item.calories,
-            proteins: item.proteins,
-            fat: item.fat,
-            carbohydrates: item.carbohydrates
-        })
-    };
-    const handleCloseModal = () => setIngredientModalData(null);
+    const data = useSelector(store => store.burgerIngredients.data);
+    const {isOpen, modalData} = useSelector(store => store.ingredientModalReducer)
+
+    const handleOpenModal = (item) => dispatch(addIngredientModalData(item));
+    const handleCloseModal = () => dispatch(removeIngredientModalData());
+
+    const [currentTap, setCurrentTap] = React.useState('bun');
+
+    const [bunRef, inBunView] = useInView();
+    const [mainRef, inMainView] = useInView();
+    const [sauceRef, inSauceView] = useInView();
+
+    const handleTabClick = (e) => setCurrentTap(e);
+
+    React.useEffect(
+        () => {
+            const target = document.querySelector(`#${currentTap}`);
+            target.scrollIntoView();
+        },
+        [currentTap]
+    );
+
+    React.useEffect(() => {
+            if (inBunView) {
+                setCurrentTap('bun')
+            } else if (inSauceView) {
+                setCurrentTap('sauce')
+            } else if (inMainView) {
+                setCurrentTap('main')
+            }
+        },
+        [inBunView, inSauceView, inMainView]
+    );
+
 
     const buns = React.useMemo(
         () => data.filter(item => item.type === 'bun'),
@@ -76,19 +72,50 @@ const BurgerIngredients = ({data}) => {
     return (
         <section className={`${styles.main__section_left} pt-10`}>
             <h1 className={'text text_type_main-large mb-5'}>Соберите бургер</h1>
-            <BurgerIngredientNav tabs={tabs}/>
+            <nav className={`mb-10`}>
+                <ul className={`${styles.section__btnContainer}`}>
+                    {
+                        tabs.map(item => (
+                            <li key={item.code}>
+                                <Tab key={item.code} value={item.code} active={currentTap === item.code}
+                                     onClick={handleTabClick}>
+                                    {item.ruCode}
+                                </Tab>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
             <div className={`${global.section__scrollWrapper} scroll`}>
-                <BurgerIngredientElements id={'bun'} headerText={'Булки'} data={buns} onClick={handleOpenModal}/>
-                <BurgerIngredientElements id={'sauce'} headerText={'Соусы'} data={sauces} onClick={handleOpenModal}/>
-                <BurgerIngredientElements id={'main'} headerText={'Начинка'} data={mains} onClick={handleOpenModal}/>
-                {ingredientModalData && (
+                <div ref={bunRef}>
+                    <BurgerIngredientElements
+                        id={'bun'}
+                        headerText={'Булки'}
+                        data={buns}
+                        onClick={handleOpenModal}/>
+                </div>
+                <div ref={sauceRef}>
+                    <BurgerIngredientElements
+                        id={'sauce'}
+                        headerText={'Соусы'}
+                        data={sauces}
+                        onClick={handleOpenModal}/>
+                </div>
+                <div ref={mainRef}>
+                    <BurgerIngredientElements
+                        id={'main'}
+                        headerText={'Начинка'}
+                        data={mains}
+                        onClick={handleOpenModal}/>
+                </div>
+                {isOpen && (
                     <Modal onClose={handleCloseModal} title={"Детали ингредиента"}>
-                        <IngredientDetails name={ingredientModalData.name}
-                                           carbohydrates={ingredientModalData.carbohydrates}
-                                           proteins={ingredientModalData.proteins}
-                                           fat={ingredientModalData.fat}
-                                           calories={ingredientModalData.calories}
-                                           image_large={ingredientModalData.image_large}/>
+                        <IngredientDetails name={modalData.name}
+                                           carbohydrates={modalData.carbohydrates}
+                                           proteins={modalData.proteins}
+                                           fat={modalData.fat}
+                                           calories={modalData.calories}
+                                           image_large={modalData.image_large}/>
                     </Modal>
                 )}
             </div>

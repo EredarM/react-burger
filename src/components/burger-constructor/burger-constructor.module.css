@@ -3,16 +3,30 @@
     flex-direction: column;
     align-items: center;
     gap: 40px;
+
+    width: 100%;
 }
 
 .content__ul {
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    height: 100%;
+    width: 100%;
 }
 
 .content__li {
     cursor: pointer;
+    position: relative;
+
+    box-sizing: border-box;
+}
+
+.content__li__img {
+    position: absolute;
+    left: -5%;
+    top: 45%;
 }
 
 .bottom {

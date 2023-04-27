@@ -1,14 +1,12 @@
 .main__section_left {
     display: flex;
     flex-direction: column;
+
+    width: 100%;
 }
 
 .section__btnContainer {
     display: flex;
-}
-
-.section__btnContainer_item {
-    flex-grow: 1;
 }
 
 .section__btnContainer_btn {
