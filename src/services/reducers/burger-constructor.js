@@ -3,16 +3,17 @@ import {
     REMOVE_INGREDIENT,
     REORDER_INGREDIENTS
 } from '../actions/burger-constructor';
+import {BUN} from "../static/constant";
 
 const initialState = {
     ingredients: [],
-    bun: {}
+    bun: null
 };
 
 export const burgerConstructorReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT:
-            if (action.item.type === 'bun') {
+            if (action.item.type === BUN) {
                 return {
                     ...state,
                     bun: {

@@ -6,6 +6,19 @@ export function getIngredients(dispatchCallBack) {
         .then(dispatchCallBack);
 }
 
+export function postIngredients(body, dispatchCallBack) {
+    return fetch(`${NORMA_API}/orders`, {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+        .then(checkResponse)
+        .then(dispatchCallBack);
+}
+
 const checkResponse = (res) => {
     return res.ok ?
         res.json()

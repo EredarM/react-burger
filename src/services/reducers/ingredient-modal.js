@@ -4,22 +4,13 @@ import {
 } from "../actions/ingredient-modal";
 
 const initialState = {
-    isOpen: false,
-    modalData: {
-        name: null,
-        image_large: null,
-        calories: null,
-        proteins: null,
-        fat: null,
-        carbohydrates: null
-    }
+    modalData: null
 }
 
 export const ingredientModalReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT_MODAL:
             return {
-                isOpen: true,
                 modalData: {
                     name: action.name,
                     image_large: action.image_large,
@@ -31,8 +22,7 @@ export const ingredientModalReducer = (state = initialState, action) => {
             };
         case REMOVE_INGREDIENT_MODAL:
             return {
-                isOpen: false,
-                modalData: {}
+                modalData: null
             };
         default: {
             return state;

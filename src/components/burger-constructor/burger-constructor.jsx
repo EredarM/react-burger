@@ -6,7 +6,7 @@ import BurgerConstructorElement from "./burger-constructor-element/burger-constr
 
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import {addOrderModalData, removeOrderModalData} from "../../services/actions/order-modal";
+import {addOrderModalData, removeOrderModalData} from "../../services/actions/order";
 import {addIngredient} from "../../services/actions/burger-constructor";
 
 import styles from './burger-constructor.module.css';
@@ -14,7 +14,7 @@ import global from '../../index.module.css';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const {isOpen} = useSelector(state => state.orderModalReducer)
+    const orderData = useSelector(state => state.orderReducer.orderData);
 
     const {bun, ingredients} = useSelector(store => store.burgerConstructor);
     const ingredientsData = useSelector(store => store.burgerIngredients.data);
@@ -24,15 +24,25 @@ const BurgerConstructor = () => {
             id: item.uniqueId,
             data: ingredientsData.find(i => i._id === item.itemId)
         })),
-        [ingredients]
+        [ingredients, ingredientsData]
     );
 
     const bunRender = React.useMemo(
-        () => ingredientsData.find(i => i._id === bun.itemId),
-        [bun]
+        () => ingredientsData.find(i => i._id === bun?.itemId),
+        [bun, ingredientsData]
     );
 
-    const handleOpenOrderModal = () => dispatch(addOrderModalData());
+    const handleOpenOrderModal = () => {
+        if (!bunRender || !ingredientsRender) {
+            alert("Добавьте булочку!");
+            return;
+        }
+        if (!ingredientsRender) {
+            alert("Добавьте ингредиенты!");
+            return;
+        }
+        dispatch(addOrderModalData(bunRender, ingredientsRender))
+    };
     const handleCloseOrderModal = () => dispatch(removeOrderModalData());
 
     const [, dropTarget] = useDrop({
@@ -41,6 +51,16 @@ const BurgerConstructor = () => {
             dispatch(addIngredient(item));
         }
     });
+
+    const price = React.useMemo(
+        () => {
+            const bunPrice = bunRender ? bunRender.price * 2 : 0;
+            return ingredientsRender
+                .map(item => item.data.price)
+                .reduce((sum, currentValue) => sum + currentValue, 0) + bunPrice
+        },
+        [ingredientsRender, bunRender]
+    );
 
     return (
         <section className={`${styles.main__section_rigth} pt-25`}>
@@ -86,19 +106,16 @@ const BurgerConstructor = () => {
             </div>
             <div className={styles.bottom}>
                 <div className={`${styles.bottom__priceWrapper} mb-1`}>
-                        <span
-                            className={`text text_type_digits-medium`}>
-                            {ingredientsRender.map(item => item.data.price).reduce((sum, currentValue) => sum + currentValue, 0)}
-                        </span>
+                        <span className={`text text_type_digits-medium`}>{price}</span>
                     <CurrencyIcon type={'primary'}/>
                 </div>
                 <Button onClick={handleOpenOrderModal} htmlType="button" type="primary" size="medium">
                     Оформить заказ
                 </Button>
             </div>
-            {isOpen &&
+            {orderData &&
                 <Modal onClose={handleCloseOrderModal}>
-                    <OrderDetails/>
+                    <OrderDetails orderData={orderData}/>
                 </Modal>
             }
         </section>

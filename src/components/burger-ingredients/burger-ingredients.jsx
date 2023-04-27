@@ -11,23 +11,24 @@ import {addIngredientModalData, removeIngredientModalData} from "../../services/
 
 import styles from './burger-ingredients.module.css';
 import global from '../../index.module.css';
+import {BUN, MAIN, SAUCE} from "../../services/static/constant";
 
 const BurgerIngredients = () => {
     const tabs = [
-        {code: 'bun', ruCode: 'Булки'},
-        {code: 'sauce', ruCode: 'Соусы'},
-        {code: 'main', ruCode: 'Начинки'}
+        {code: BUN, ruCode: 'Булки'},
+        {code: SAUCE, ruCode: 'Соусы'},
+        {code: MAIN, ruCode: 'Начинки'}
     ];
 
     const dispatch = useDispatch();
 
     const data = useSelector(store => store.burgerIngredients.data);
-    const {isOpen, modalData} = useSelector(store => store.ingredientModalReducer)
+    const {modalData} = useSelector(store => store.ingredientModalReducer)
 
     const handleOpenModal = (item) => dispatch(addIngredientModalData(item));
     const handleCloseModal = () => dispatch(removeIngredientModalData());
 
-    const [currentTap, setCurrentTap] = React.useState('bun');
+    const [currentTap, setCurrentTap] = React.useState(BUN);
 
     const [bunRef, inBunView] = useInView();
     const [mainRef, inMainView] = useInView();
@@ -45,11 +46,11 @@ const BurgerIngredients = () => {
 
     React.useEffect(() => {
             if (inBunView) {
-                setCurrentTap('bun')
+                setCurrentTap(BUN)
             } else if (inSauceView) {
-                setCurrentTap('sauce')
+                setCurrentTap(SAUCE)
             } else if (inMainView) {
-                setCurrentTap('main')
+                setCurrentTap(MAIN)
             }
         },
         [inBunView, inSauceView, inMainView]
@@ -57,15 +58,15 @@ const BurgerIngredients = () => {
 
 
     const buns = React.useMemo(
-        () => data.filter(item => item.type === 'bun'),
+        () => data.filter(item => item.type === BUN),
         [data]
     );
     const mains = React.useMemo(
-        () => data.filter(item => item.type === 'main'),
+        () => data.filter(item => item.type === MAIN),
         [data]
     );
     const sauces = React.useMemo(
-        () => data.filter(item => item.type === 'sauce'),
+        () => data.filter(item => item.type === SAUCE),
         [data]
     );
 
@@ -89,26 +90,26 @@ const BurgerIngredients = () => {
             <div className={`${global.section__scrollWrapper} scroll`}>
                 <div ref={bunRef}>
                     <BurgerIngredientElements
-                        id={'bun'}
+                        id={BUN}
                         headerText={'Булки'}
                         data={buns}
                         onClick={handleOpenModal}/>
                 </div>
                 <div ref={sauceRef}>
                     <BurgerIngredientElements
-                        id={'sauce'}
+                        id={SAUCE}
                         headerText={'Соусы'}
                         data={sauces}
                         onClick={handleOpenModal}/>
                 </div>
                 <div ref={mainRef}>
                     <BurgerIngredientElements
-                        id={'main'}
+                        id={MAIN}
                         headerText={'Начинка'}
                         data={mains}
                         onClick={handleOpenModal}/>
                 </div>
-                {isOpen && (
+                {modalData && (
                     <Modal onClose={handleCloseModal} title={"Детали ингредиента"}>
                         <IngredientDetails name={modalData.name}
                                            carbohydrates={modalData.carbohydrates}

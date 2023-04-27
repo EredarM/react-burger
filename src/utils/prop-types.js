@@ -34,3 +34,13 @@ export const dataProps3 = {
         name: PropTypes.string.isRequired
     })
 };
+
+export const dataOrderPost = {
+    orderData: PropTypes.shape({
+        name: PropTypes.string,
+        order: PropTypes.shape({
+            number: PropTypes.number
+        }),
+        success: PropTypes.bool
+    })
+}
