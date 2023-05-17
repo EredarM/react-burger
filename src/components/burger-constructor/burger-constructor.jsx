@@ -15,6 +15,7 @@ import global from '../../index.module.css';
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const orderData = useSelector(state => state.orderReducer.orderData);
+    const userData = useSelector(state => state.user.userData);
 
     const {bun, ingredients} = useSelector(store => store.burgerConstructor);
     const ingredientsData = useSelector(store => store.burgerIngredients.data);
@@ -39,6 +40,10 @@ const BurgerConstructor = () => {
         }
         if (!ingredientsRender) {
             alert("Добавьте ингредиенты!");
+            return;
+        }
+        if (!userData) {
+            alert("Войдите в систему!");
             return;
         }
         dispatch(addOrderModalData(bunRender, ingredientsRender))

@@ -2,11 +2,6 @@
     --width-container: 1200px;
 }
 
-.header__container {
-    width: calc(var(--width-container) + (20px * 2));
-    margin: 0 auto;
-}
-
 .container {
     width: var(--width-container);
     height: 100%;
@@ -24,4 +19,8 @@
 
     height: 100%;
     width: 100%;
+}
+
+.main {
+    height: calc(100% - 100px);
 }

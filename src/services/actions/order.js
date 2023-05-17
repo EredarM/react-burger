@@ -31,13 +31,8 @@ export const addOrderModalData = (bun, ingredients) => (dispatch) => {
         'ingredients' : [...ingredientIds, bunId]
     }
 
-    postIngredients(postData, response => {
-        if (response && response.success) {
-            dispatch(addOrderSuccess(response));
-        } else {
-            dispatch(addOrderFailed());
-        }
-    })
+    postIngredients(postData)
+        .then(response => dispatch(addOrderSuccess(response)))
         .catch(err => {
         dispatch(addOrderFailed());
         alert("Ошибка отправки данных");

@@ -1,0 +1,31 @@
+.profile__container {
+    display: flex;
+    justify-content: flex-start;
+
+    margin-top: 120px;
+}
+
+.nav__wrapper {
+    width: 320px;
+}
+
+.nav__ul {
+
+}
+
+.nav__item {
+    padding: 17px 0 17px 0;
+    height: 64px;
+}
+
+.item__link {
+    text-decoration: none;
+}
+
+.item__link_active {
+    color: inherit;
+}
+
+.nav__wrapper_info {
+    color: #8585AD
+}

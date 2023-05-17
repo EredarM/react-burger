@@ -1,0 +1,23 @@
+.content__main_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.content__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content__info_list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content__info_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

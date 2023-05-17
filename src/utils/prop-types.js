@@ -43,4 +43,10 @@ export const dataOrderPost = {
         }),
         success: PropTypes.bool
     })
+};
+
+export const headerLinkProps = {
+    iconType: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
 }

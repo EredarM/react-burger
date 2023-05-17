@@ -8,7 +8,7 @@ import styles from './order-details.module.css';
 const OrderDetails = ({orderData}) => {
     const { order, success } = orderData;
 
-    if (success) {
+    if (!success) {
         return (
             <div className={styles.modal__wrapper}>
                 <h2 className={`mb-20 text text_type_digits-large ${styles.title_shadow}`}>Ошибка</h2>
