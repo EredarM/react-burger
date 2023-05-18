@@ -5,6 +5,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 
 import {register} from "../../services/actions/user/register";
 import {useForm} from "../../hooks/useForm";
+import {loginPath, rootPath} from "../../utils/route-path";
 
 import styles from './register-page.module.css';
 import global from "../../index.module.css";
@@ -30,7 +31,7 @@ const RegisterPage = () => {
 
     React.useEffect(
         () => {
-            isAuthUser && navigate('/', {
+            isAuthUser && navigate(rootPath, {
                 replace: true
             });
         },
@@ -83,7 +84,7 @@ const RegisterPage = () => {
                 </Button>
                 <div className={`text text_type_main-default mb-4 ${styles.register__info_container}`}>
                     <p>Уже зарегистрированы?</p>
-                    <Link className={styles.register__link} to={'/login'}>Войти</Link>
+                    <Link className={styles.register__link} to={loginPath}>Войти</Link>
                 </div>
             </form>
         </div>

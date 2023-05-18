@@ -10,6 +10,15 @@ import Profile from "../profile/profile";
 import AppHeader from "../app-header/app-header";
 import IngredientInfo from "../ingredient-info/ingredient-info";
 import {getBurgerIngredients} from "../../services/actions/burger-ingredients";
+import {
+    forgotPasswordPath, ingredientByIdPath,
+    loginPath,
+    logoutPath,
+    profileOrdersPath,
+    profilePath,
+    registerPath, resetPasswordPath,
+    rootPath
+} from "../../utils/route-path";
 
 import global from "../../index.module.css";
 
@@ -29,8 +38,8 @@ const Router = () => {
     return (
         <>
             <Routes location={baseUrl || location}>
-                <Route path={'/'} element={<HomePage/>}/>
-                <Route path={'/profile'} element={
+                <Route path={rootPath} element={<HomePage/>}/>
+                <Route path={profilePath} element={
                     <ProtectedRouteUser
                         isAuthOnly={true}
                         element={
@@ -40,7 +49,7 @@ const Router = () => {
                         }
                     />
                 }/>
-                <Route path={'/profile/orders'} element={
+                <Route path={profileOrdersPath} element={
                     <ProtectedRouteUser
                         isAuthOnly={true}
                         element={
@@ -50,32 +59,32 @@ const Router = () => {
                         }
                     />
                 }/>
-                <Route path="/ingredients/:id" element={<IngredientInfo />} />
-                <Route path={'/logout'} element={
+                <Route path={ingredientByIdPath} element={<IngredientInfo />} />
+                <Route path={logoutPath} element={
                     <ProfilePage/>
                 }/>
-                <Route path={'/login'} element={
+                <Route path={loginPath} element={
                     <ProtectedRouteUser
                         element={
                             <LoginPage/>
                         }
                     />
                 }/>
-                <Route path={'/register'} element={
+                <Route path={registerPath} element={
                     <ProtectedRouteUser
                         element={
                             <RegisterPage/>
                         }
                     />
                 }/>
-                <Route path={'/forgot-password'} element={
+                <Route path={forgotPasswordPath} element={
                     <ProtectedRouteUser
                         element={
                             <ForgotPasswordPage/>
                         }
                     />
                 }/>
-                <Route path={'/reset-password'} element={
+                <Route path={resetPasswordPath} element={
                     <ProtectedRouteUser
                         element={
                             <ResetPasswordPage/>

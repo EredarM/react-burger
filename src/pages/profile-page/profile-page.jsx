@@ -1,10 +1,12 @@
 import React from "react";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+
+import {logout} from "../../services/actions/user/logout";
+import {loginPath, logoutPath, profileOrdersPath, profilePath} from "../../utils/route-path";
 
 import styles from './profile-page.module.css';
 import global from "../../index.module.css";
-import {NavLink, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../services/actions/user/logout";
 
 
 const ProfilePage = ({element}) => {
@@ -24,7 +26,7 @@ const ProfilePage = ({element}) => {
 
     React.useEffect(
         () => {
-            !isAuthUser && navigate('/login', {
+            !isAuthUser && navigate(loginPath, {
                 replace: true
             });
         },
@@ -37,13 +39,13 @@ const ProfilePage = ({element}) => {
                 <nav className={`mb-20`}>
                     <ul className={styles.nav__ul}>
                         <li className={styles.nav__item}>
-                            <NavLink to={'/profile'} className={setActive} end>Профиль</NavLink>
+                            <NavLink to={profilePath} className={setActive} end>Профиль</NavLink>
                         </li>
                         <li className={styles.nav__item}>
-                            <NavLink to={'/profile/orders'} className={setActive}>История заказов</NavLink>
+                            <NavLink to={profileOrdersPath} className={setActive}>История заказов</NavLink>
                         </li>
                         <li className={styles.nav__item}>
-                            <NavLink to={'/logout'} onClick={onLogoutClick} className={setActive}>Выход</NavLink>
+                            <NavLink to={logoutPath} onClick={onLogoutClick} className={setActive}>Выход</NavLink>
                         </li>
                     </ul>
                 </nav>

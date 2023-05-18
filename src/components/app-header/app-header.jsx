@@ -1,8 +1,11 @@
 import {Logo} from '@ya.praktikum/react-developer-burger-ui-components'
 import HeaderNavElement from "./header-nav-element/header-nav-element";
 
+import {profilePath, rootPath} from "../../utils/route-path";
+
 import styles from './app-header.module.css';
 import global from '../../index.module.css';
+
 
 const AppHeader = () => {
     return (
@@ -11,7 +14,7 @@ const AppHeader = () => {
                 <nav className={`${styles.header__nav_container} pt-4 pb-4`}>
                     <ul className={styles.nav__ul_left}>
                         <li className='mr-2'>
-                            <HeaderNavElement url={'/'} iconType={'burger'} text={'Конструктор'}/>
+                            <HeaderNavElement url={rootPath} iconType={'burger'} text={'Конструктор'}/>
                         </li>
                         <li>
                             <HeaderNavElement url={'/order-list'} iconType={'order-list'} text={'Лента заказов'}/>
@@ -22,7 +25,7 @@ const AppHeader = () => {
                     </div>
                     <ul className={styles.nav__ul_right}>
                         <li>
-                            <HeaderNavElement url={'/profile'} iconType={'profile'} text={'Личный кабинет'}/>
+                            <HeaderNavElement url={profilePath} iconType={'profile'} text={'Личный кабинет'}/>
                         </li>
                     </ul>
                 </nav>

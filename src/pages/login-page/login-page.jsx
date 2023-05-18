@@ -5,6 +5,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 
 import {login} from "../../services/actions/user/login";
 import {useForm} from "../../hooks/useForm";
+import {forgotPasswordPath, registerPath, rootPath} from "../../utils/route-path";
 
 import styles from './login-page.module.css';
 import global from "../../index.module.css";
@@ -33,7 +34,7 @@ const LoginPage = () => {
 
     React.useEffect(
         () => {
-            isAuthUser && navigate('/', {
+            isAuthUser && navigate(rootPath, {
                 replace: true,
 
             });
@@ -77,11 +78,11 @@ const LoginPage = () => {
                 </Button>
                 <div className={`text text_type_main-default mb-4 ${styles.login__info_container}`}>
                     <p>Вы - новый пользователь?</p>
-                    <Link className={styles.login__link} to={'/register'}>Зарегистрироваться</Link>
+                    <Link className={styles.login__link} to={registerPath}>Зарегистрироваться</Link>
                 </div>
                 <div className={`text text_type_main-default ${styles.login__info_container}`}>
                     <p>Забыли пароль?</p>
-                    <Link className={styles.login__link} to={'/forgot-password'}>Восстановить пароль</Link>
+                    <Link className={styles.login__link} to={forgotPasswordPath}>Восстановить пароль</Link>
                 </div>
             </form>
         </div>

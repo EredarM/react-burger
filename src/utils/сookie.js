@@ -1,3 +1,5 @@
+import {rootPath} from "./route-path";
+
 export function getCookie(name) {
     const matches = document.cookie.match(
         // eslint-disable-next-line
@@ -9,7 +11,7 @@ export function getCookie(name) {
 export function setCookie(name, value, props = {}) {
     props = {
         ...props,
-        path: '/'
+        path: rootPath
     };
 
     let exp = props.expires;
@@ -36,7 +38,7 @@ export function setCookie(name, value, props = {}) {
 export function deleteCookie(name) {
     setCookie(name, null, {
         expires: -1,
-        path: '/'
+        path: rootPath
     });
 }
 

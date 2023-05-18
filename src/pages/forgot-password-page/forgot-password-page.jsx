@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 import {forgotPasswordRequest} from "../../utils/burger-api";
 import {useForm} from "../../hooks/useForm";
+import {loginPath, resetPasswordPath} from "../../utils/route-path";
 
 import styles from './forgot-password.module.css';
 import global from "../../index.module.css";
@@ -20,7 +21,7 @@ const ForgotPasswordPage = () => {
 
     React.useEffect(
         () => {
-            isSecurityCodeSend && navigate('/reset-password',
+            isSecurityCodeSend && navigate(resetPasswordPath,
                 {
                     state: {from: "forgot-password"},
                     replace: true
@@ -69,7 +70,7 @@ const ForgotPasswordPage = () => {
                     </Button>
                     <div className={`text text_type_main-default mb-4 ${styles.forgot_password__info_container}`}>
                         <p>Вспомнили пароль?</p>
-                        <Link className={styles.forgot_password__link} to={'/login'}>Войти</Link>
+                        <Link className={styles.forgot_password__link} to={loginPath}>Войти</Link>
                     </div>
                 </form>
             </div>
