@@ -133,8 +133,8 @@ export function resetPasswordRequest(body) {
         .then(extractResponse);
 }
 
-async function refreshTokenRequest() {
-    fetch(`${NORMA_API}${TOKEN_API}`, {
+function refreshTokenRequest() {
+    return fetch(`${NORMA_API}${TOKEN_API}`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -145,11 +145,7 @@ async function refreshTokenRequest() {
         })
     })
         .then(checkResponse)
-        .then(extractResponse)
-        .then(response => {
-            setCookie('accessToken', response.accessToken);
-            setCookie('refreshToken', response.refreshToken);
-        });
+        .then(extractResponse);
 }
 
 async function securityFetch(fetchCallback, authToken, body) {
@@ -159,12 +155,17 @@ async function securityFetch(fetchCallback, authToken, body) {
             .then(extractResponse);
     } catch (err) {
         if (err.message === 'jwt expired') {
-            await refreshTokenRequest();
+            const responseToken = await refreshTokenRequest();
+
+            setCookie('accessToken', responseToken.accessToken);
+            setCookie('refreshToken', responseToken.refreshToken)
+
+            const newAuthToken = getCookie('accessToken');
+            return await fetchCallback(newAuthToken, body)
+                .then(checkResponse)
+                .then(extractResponse);
         }
-        const newAuthToken = getCookie('refreshToken')
-        return await fetchCallback(newAuthToken, body)
-            .then(checkResponse)
-            .then(extractResponse);
+        return Promise.reject(err);
     }
 }
 

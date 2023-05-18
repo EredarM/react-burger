@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import styles from './profile.module.css';
 import {updateUser} from "../../services/actions/user/user";
+import {useForm} from "../../hooks/useForm";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -13,31 +14,33 @@ const Profile = () => {
         userRequest,
         userData
     } = useSelector(store => store.user);
-    const [form, setForm] = useState({
+    const {values, handleChange, setValues} = useForm({
         name: '',
         email: '',
         password: ''
     });
 
-    React.useEffect(
-        () => {
-            setForm({
-                ...form,
+    const resetForm = React.useCallback(() => {
+            setValues({
                 name: userData ? userData.name : '',
                 email: userData ? userData.email : '',
+                password: ''
             });
         },
-        [userData]
+        [userData, setValues]
+    );
+
+    React.useEffect(
+        () => {
+            resetForm();
+        },
+        [resetForm]
     );
 
     const [nameInputDisabled, setNameInputDisabled] = useState(true);
     const [emailInputDisabled, setEmailInputDisabled] = useState(true);
     const [passwordInputDisabled, setPasswordInputDisabled] = useState(true);
     const [isDataChanged, setDataChanged] = useState(false);
-
-    const onChange = e => {
-        setForm({...form, [e.target.name]: e.target.value});
-    };
 
     const onNameIconClick = () => {
         setNameInputDisabled(!nameInputDisabled);
@@ -54,20 +57,18 @@ const Profile = () => {
 
     const onSubmitForm = (e) => {
         e.preventDefault();
-        dispatch(updateUser(form.email, form.name, form.password));
+        dispatch(updateUser(values.email, values.name, values.password));
         onCancel();
     };
+
+
 
     const onCancel = () => {
         setDataChanged(false);
         setNameInputDisabled(true);
         setEmailInputDisabled(true);
         setPasswordInputDisabled(true);
-        setForm({
-            name: userData ? userData.name : '',
-            email: userData ? userData.email : '',
-            password: ''
-        });
+        resetForm();
     };
 
     if (userRequest) {
@@ -79,11 +80,11 @@ const Profile = () => {
             <Input
                 type={'text'}
                 placeholder={'Имя'}
-                onChange={e => onChange(e)}
+                onChange={e => handleChange(e)}
                 icon={'EditIcon'}
                 onIconClick={onNameIconClick}
                 disabled={nameInputDisabled}
-                value={form.name}
+                value={values.name}
                 name={'name'}
                 error={false}
                 size={'default'}
@@ -92,11 +93,11 @@ const Profile = () => {
             <Input
                 type={'email'}
                 placeholder={'E-mail'}
-                onChange={e => onChange(e)}
+                onChange={e => handleChange(e)}
                 icon={'EditIcon'}
                 onIconClick={onEmailIconClick}
                 disabled={emailInputDisabled}
-                value={form.email}
+                value={values.email}
                 name={'email'}
                 error={false}
                 size={'default'}
@@ -105,11 +106,11 @@ const Profile = () => {
             <Input
                 type={'password'}
                 placeholder={'Пароль'}
-                onChange={e => onChange(e)}
+                onChange={e => handleChange(e)}
                 icon={'EditIcon'}
                 onIconClick={onPasswordIconClick}
                 disabled={passwordInputDisabled}
-                value={form.password}
+                value={values.password}
                 name={'password'}
                 error={false}
                 size={'default'}

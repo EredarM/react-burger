@@ -3,6 +3,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
 
 import {resetPasswordRequest} from "../../utils/burger-api";
+import {useForm} from "../../hooks/useForm";
 
 import styles from './reset-password.module.css';
 import global from "../../index.module.css";
@@ -15,14 +16,10 @@ const ResetPasswordPage = () => {
 
     const [isPasswordReset, setPasswordReset] = useState(false);
     const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
-    const [form, setForm] = useState({
+    const {values, handleChange} = useForm({
         password: '',
         token: ''
     });
-
-    const onChange = e => {
-        setForm({...form, [e.target.name]: e.target.value});
-    };
 
     const onIconClick = () => {
         const attr = passRef.current?.type === 'text' ? 'password' : 'text';
@@ -32,8 +29,8 @@ const ResetPasswordPage = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         resetPasswordRequest({
-            password: form.password,
-            token: form.token
+            password: values.password,
+            token: values.token
         })
             .then(response => {
                 if (response) {
@@ -63,10 +60,10 @@ const ResetPasswordPage = () => {
                 <Input
                     type={'password'}
                     placeholder={'Пароль'}
-                    onChange={e => onChange(e)}
+                    onChange={e => handleChange(e)}
                     icon={'ShowIcon'}
                     onIconClick={onIconClick}
-                    value={form.password}
+                    value={values.password}
                     name={'password'}
                     error={false}
                     size={'default'}
@@ -76,8 +73,8 @@ const ResetPasswordPage = () => {
                 <Input
                     type={'text'}
                     placeholder={'Введите код из письма'}
-                    onChange={e => onChange(e)}
-                    value={form.token}
+                    onChange={e => handleChange(e)}
+                    value={values.token}
                     name={'token'}
                     error={false}
                     size={'default'}

@@ -3,6 +3,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 import {Link, useNavigate} from "react-router-dom";
 
 import {forgotPasswordRequest} from "../../utils/burger-api";
+import {useForm} from "../../hooks/useForm";
 
 import styles from './forgot-password.module.css';
 import global from "../../index.module.css";
@@ -13,13 +14,9 @@ const ForgotPasswordPage = () => {
 
     const [isSecurityCodeSend, setSecurityCodeSend] = useState(false);
     const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
-    const [form, setForm] = useState({
+    const {values, handleChange} = useForm({
         email: ''
     });
-
-    const onChange = e => {
-        setForm({...form, [e.target.name]: e.target.value});
-    };
 
     React.useEffect(
         () => {
@@ -36,7 +33,7 @@ const ForgotPasswordPage = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         forgotPasswordRequest({
-            "email": form.email
+            "email": values.email
         })
             .then(response => {
                 if (response) {
@@ -56,8 +53,8 @@ const ForgotPasswordPage = () => {
                     <Input
                         type={'email'}
                         placeholder={'E-mail'}
-                        onChange={e => onChange(e)}
-                        value={form.email}
+                        onChange={e => handleChange(e)}
+                        value={values.email}
                         name={'email'}
                         error={false}
                         size={'default'}

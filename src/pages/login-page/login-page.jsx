@@ -1,9 +1,10 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import {login} from "../../services/actions/user/login";
+import {useForm} from "../../hooks/useForm";
 
 import styles from './login-page.module.css';
 import global from "../../index.module.css";
@@ -11,7 +12,7 @@ import global from "../../index.module.css";
 
 const LoginPage = () => {
     const {isAuthUser, loginRequestError} = useSelector(store => store.user);
-    const [form, setForm] = useState({
+    const {values, handleChange} = useForm({
         email: '',
         password: ''
     });
@@ -20,10 +21,6 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const passRef = useRef();
 
-    const onChange = e => {
-        setForm({...form, [e.target.name]: e.target.value});
-    };
-
     const onIconClick = () => {
         const attr = passRef.current?.type === 'text' ? 'password' : 'text';
         passRef.current?.setAttribute('type', attr);
@@ -31,13 +28,14 @@ const LoginPage = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(login(form.email, form.password));
+        dispatch(login(values.email, values.password));
     };
 
     React.useEffect(
         () => {
             isAuthUser && navigate('/', {
-                replace: true
+                replace: true,
+
             });
         },
         [isAuthUser, navigate]
@@ -50,8 +48,8 @@ const LoginPage = () => {
                 <Input
                     type={'email'}
                     placeholder={'E-mail'}
-                    onChange={e => onChange(e)}
-                    value={form.email}
+                    onChange={e => handleChange(e)}
+                    value={values.email}
                     name={'email'}
                     error={false}
                     size={'default'}
@@ -60,10 +58,10 @@ const LoginPage = () => {
                 <Input
                     type={'password'}
                     placeholder={'Пароль'}
-                    onChange={e => onChange(e)}
+                    onChange={e => handleChange(e)}
                     icon={'ShowIcon'}
                     onIconClick={onIconClick}
-                    value={form.password}
+                    value={values.password}
                     name={'password'}
                     error={false}
                     size={'default'}

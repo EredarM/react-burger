@@ -1,31 +1,27 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 
 import {isUserAuth} from "../../services/actions/user/user";
 
 
 const ProtectedRouteUser = ({isAuthOnly = false, element}) => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const {isAuthUser, isAuthUserChecked} = useSelector(store => store.user);
 
-    useEffect(() => {
-            dispatch(isUserAuth());
-        },
-        [dispatch]
-    );
+    useEffect(() => dispatch(isUserAuth()), [dispatch]);
 
     if (!isAuthUserChecked) {
         return null;
     }
 
     if (!isAuthOnly && isAuthUser) {
-        return (<Navigate to="/" replace/>);
+        return (<Navigate to={location?.state?.from || '/'} replace/>);
     }
 
-    if (isAuthOnly && (!isAuthUser || !isAuthUserChecked)) { //TODO добавить редирект на from
-
-        return (<Navigate to="/login" replace/>);
+    if (isAuthOnly && (!isAuthUser || !isAuthUserChecked)) {
+        return (<Navigate to='/login' state={{from: location}} replace/>);
     }
 
     return element;
