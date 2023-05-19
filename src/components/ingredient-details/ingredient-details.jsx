@@ -1,8 +1,15 @@
-import PropTypes from 'prop-types';
-
 import styles from './ingredient-details.module.css';
+import {useSelector} from "react-redux";
 
-const IngredientDetails = ({image_large, name, calories, proteins, fat, carbohydrates}) => {
+const IngredientDetails = () => {
+    const {
+        image_large,
+        name,
+        calories,
+        proteins,
+        fat,
+        carbohydrates
+    } = useSelector(store => store.ingredientModalReducer.modalData);
 
     return (
         <div className={`${styles.modal__wrapper} mt-8`}>
@@ -29,14 +36,5 @@ const IngredientDetails = ({image_large, name, calories, proteins, fat, carbohyd
         </div>
     )
 };
-
-IngredientDetails.propTypes = {
-    image_large: PropTypes.string.isRequired,
-    calories: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired
-}
-
 
 export default IngredientDetails;

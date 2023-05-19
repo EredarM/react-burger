@@ -2,7 +2,7 @@ import React from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {useInView} from 'react-intersection-observer';
-
+import {useLocation, useNavigate} from "react-router-dom";
 
 import BurgerIngredientElements from "./burger-ingredient-elements/burger-ingredient-elements";
 import Modal from "../modal/modal";
@@ -13,6 +13,7 @@ import styles from './burger-ingredients.module.css';
 import global from '../../index.module.css';
 import {BUN, MAIN, SAUCE} from "../../services/static/constant";
 
+
 const BurgerIngredients = () => {
     const tabs = [
         {code: BUN, ruCode: 'Булки'},
@@ -21,12 +22,32 @@ const BurgerIngredients = () => {
     ];
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const data = useSelector(store => store.burgerIngredients.data);
-    const {modalData} = useSelector(store => store.ingredientModalReducer)
+    const {modalData} = useSelector(store => store.ingredientModalReducer);
 
-    const handleOpenModal = (item) => dispatch(addIngredientModalData(item));
-    const handleCloseModal = () => dispatch(removeIngredientModalData());
+    const handleOpenModal = React.useCallback(
+        (item) => {
+            dispatch(addIngredientModalData(item));
+            navigate(`/ingredients/${item._id}`, {
+                state: {
+                    baseUrl: location,
+                    id: item._id
+                },
+            });
+        },
+        [dispatch, navigate, location]
+    );
+
+    const handleCloseModal = React.useCallback(
+        () => {
+            dispatch(removeIngredientModalData());
+            navigate(`/`);
+        },
+        [dispatch, navigate]
+    );
 
     const [currentTap, setCurrentTap] = React.useState(BUN);
 
@@ -111,12 +132,7 @@ const BurgerIngredients = () => {
                 </div>
                 {modalData && (
                     <Modal onClose={handleCloseModal} title={"Детали ингредиента"}>
-                        <IngredientDetails name={modalData.name}
-                                           carbohydrates={modalData.carbohydrates}
-                                           proteins={modalData.proteins}
-                                           fat={modalData.fat}
-                                           calories={modalData.calories}
-                                           image_large={modalData.image_large}/>
+                        <IngredientDetails/>
                     </Modal>
                 )}
             </div>

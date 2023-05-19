@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
-
+import {NavLink} from "react-router-dom";
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+
+import {headerLinkProps} from "../../../utils/prop-types";
 
 import styles from './header-nav-element.module.css';
 
@@ -22,18 +23,20 @@ const getIcon = (iconType) => {
     return result;
 }
 
-const HeaderNavElement = ({iconType, text}) => {
+const HeaderNavElement = ({iconType, text, url}) => {
+    const setActive = ({isActive}) => {
+        const extraClasses = `text text_type_main-default pl-5 pr-5 ${styles.item__link}`;
+        return (isActive ? `${styles.item__link_active} ` : "text_color_inactive ") + extraClasses;
+    };
+
     return (
-        <a href={'#'} className={`${styles.nav__element} text text_type_main-default pl-5 pr-5`}>
+        <NavLink to={`${url}`} className={setActive}>
             {getIcon(iconType)}
             {text}
-        </a>
+        </NavLink>
     );
 }
 
-HeaderNavElement.propTypes = {
-    iconType: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
-}
+HeaderNavElement.propTypes = headerLinkProps;
 
 export default HeaderNavElement;
