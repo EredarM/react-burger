@@ -13,8 +13,8 @@ import global from "../../index.module.css";
 const ForgotPasswordPage = () => {
     const navigate = useNavigate();
 
-    const [isSecurityCodeSend, setSecurityCodeSend] = useState(false);
-    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
+    const [isSecurityCodeSend, setSecurityCodeSend] = useState<boolean>(false);
+    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState<string | null>(null);
     const {values, handleChange} = useForm({
         email: ''
     });
@@ -31,7 +31,7 @@ const ForgotPasswordPage = () => {
         [isSecurityCodeSend, navigate]
     );
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try {
             const response = await forgotPasswordRequest({
@@ -40,8 +40,8 @@ const ForgotPasswordPage = () => {
             if (response) {
                 setSecurityCodeSend(true);
             }
-        } catch (err) {
-            setPasswordResetErrorMsq(`Ошибка: ${err.message}`);
+        } catch (err: any) {
+            setPasswordResetErrorMsq(err);
         }
     };
 

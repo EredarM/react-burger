@@ -13,10 +13,10 @@ import global from "../../index.module.css";
 const ResetPasswordPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const passRef = useRef();
+    const passRef = useRef<HTMLInputElement>(null);
 
     const [isPasswordReset, setPasswordReset] = useState(false);
-    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
+    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState<string | null>(null);
     const {values, handleChange} = useForm({
         password: '',
         token: ''
@@ -27,7 +27,7 @@ const ResetPasswordPage = () => {
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try {
             const response = await resetPasswordRequest({
@@ -37,8 +37,8 @@ const ResetPasswordPage = () => {
             if (response) {
                 setPasswordReset(true);
             }
-        } catch (err) {
-            setPasswordResetErrorMsq(`Ошибка: ${err.message}`)
+        } catch (err: any) {
+            setPasswordResetErrorMsq(err)
         }
     };
 

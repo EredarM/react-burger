@@ -1,6 +1,6 @@
 import {rootPath} from "./route-path";
 
-export function getCookie(name) {
+export function getCookie(name: string): string | undefined{
     const matches = document.cookie.match(
         // eslint-disable-next-line
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -8,7 +8,7 @@ export function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props = {}) {
+export function setCookie(name: string, value: string | null, props: any = {}) {
     props = {
         ...props,
         path: rootPath
@@ -23,7 +23,7 @@ export function setCookie(name, value, props = {}) {
     if (exp && exp.toUTCString) {
         props.expires = exp.toUTCString();
     }
-    value = encodeURIComponent(value);
+    value = value? encodeURIComponent(value) : value;
     let updatedCookie = name + '=' + value;
     for (const propName in props) {
         updatedCookie += '; ' + propName;
@@ -35,7 +35,7 @@ export function setCookie(name, value, props = {}) {
     document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
     setCookie(name, null, {
         expires: -1,
         path: rootPath

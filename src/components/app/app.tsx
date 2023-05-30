@@ -11,28 +11,34 @@ import AppHeader from "../app-header/app-header";
 import IngredientInfo from "../ingredient-info/ingredient-info";
 import {getBurgerIngredients} from "../../services/actions/burger-ingredients";
 import {
-    forgotPasswordPath, ingredientByIdPath,
+    forgotPasswordPath,
+    ingredientByIdPath,
     loginPath,
     logoutPath,
     profileOrdersPath,
     profilePath,
-    registerPath, resetPasswordPath,
+    registerPath,
+    resetPasswordPath,
     rootPath
 } from "../../utils/route-path";
 
 import global from "../../index.module.css";
-import {AppDispatch} from "../../utils/store";
 import {LogoutPage} from "../../pages/logout-page/logout-page";
+import {TLocationProps} from "../../../declarations/types";
+import {isUserAuth} from "../../services/actions/user/user";
 
 
 const Router = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch();
     const location = useLocation() as TLocationProps;
     const baseUrl = location.state && location.state.baseUrl;
 
     React.useEffect(
         () => {
+            // @ts-ignore TODO to next sprint
             dispatch(getBurgerIngredients());
+            // @ts-ignore
+            dispatch(isUserAuth());
         },
         [dispatch]
     );
@@ -64,8 +70,8 @@ const Router = () => {
                     />
                 }/>
                 <Route path={ingredientByIdPath} element={
-                    <IngredientInfo />
-                } />
+                    <IngredientInfo/>
+                }/>
                 <Route path={logoutPath} element={
                     <LogoutPage/>
                 }/>

@@ -53,7 +53,8 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 userRequest: true,
                 userRequestFailed: false,
-                userRequestError: null
+                userRequestError: null,
+                isAuthUserChecked: false
             };
         }
         case USER_SUCCESS: {
@@ -156,8 +157,7 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userData: null,
-                isAuthUser: false,
-                isAuthUserChecked: false
+                isAuthUser: false
             };
         }
         default: {

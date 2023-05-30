@@ -12,6 +12,7 @@ import {addIngredientModalData, removeIngredientModalData} from "../../services/
 import styles from './burger-ingredients.module.css';
 import global from '../../index.module.css';
 import {BUN, MAIN, SAUCE} from "../../services/static/constant";
+import {TIngredient} from "../../../declarations/types";
 
 
 const BurgerIngredients = () => {
@@ -25,11 +26,14 @@ const BurgerIngredients = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // @ts-ignore TODO to next sprint
     const data = useSelector(store => store.burgerIngredients.data);
+
+    // @ts-ignore TODO to next sprint
     const {modalData} = useSelector(store => store.ingredientModalReducer);
 
     const handleOpenModal = React.useCallback(
-        (item) => {
+        (item: TIngredient) => {
             dispatch(addIngredientModalData(item));
             navigate(`/ingredients/${item._id}`, {
                 state: {
@@ -49,18 +53,20 @@ const BurgerIngredients = () => {
         [dispatch, navigate]
     );
 
-    const [currentTap, setCurrentTap] = React.useState(BUN);
+    const [currentTap, setCurrentTap] = React.useState<string>(BUN);
 
     const [bunRef, inBunView] = useInView();
     const [mainRef, inMainView] = useInView();
     const [sauceRef, inSauceView] = useInView();
 
-    const handleTabClick = (e) => setCurrentTap(e);
+    const handleTabClick = (e: string) => setCurrentTap(e);
 
     React.useEffect(
         () => {
             const target = document.querySelector(`#${currentTap}`);
-            target.scrollIntoView();
+            if (target) {
+                target.scrollIntoView();
+            }
         },
         [currentTap]
     );
@@ -79,14 +85,17 @@ const BurgerIngredients = () => {
 
 
     const buns = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => data.filter(item => item.type === BUN),
         [data]
     );
     const mains = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => data.filter(item => item.type === MAIN),
         [data]
     );
     const sauces = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => data.filter(item => item.type === SAUCE),
         [data]
     );

@@ -2,6 +2,7 @@ import styles from './ingredient-details.module.css';
 import {useSelector} from "react-redux";
 
 const IngredientDetails = () => {
+
     const {
         image_large,
         name,
@@ -9,6 +10,7 @@ const IngredientDetails = () => {
         proteins,
         fat,
         carbohydrates
+        // @ts-ignore TODO to next sprint
     } = useSelector(store => store.ingredientModalReducer.modalData);
 
     return (

@@ -8,11 +8,12 @@ import {useForm} from "../../hooks/useForm";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const passRef = useRef();
+    const passRef = useRef<HTMLInputElement>(null);
 
     const {
         userRequest,
         userData
+        // @ts-ignore TODO to next sprint
     } = useSelector(store => store.user);
     const {values, handleChange, setValues} = useForm({
         name: '',
@@ -37,10 +38,10 @@ const Profile = () => {
         [resetForm]
     );
 
-    const [nameInputDisabled, setNameInputDisabled] = useState(true);
-    const [emailInputDisabled, setEmailInputDisabled] = useState(true);
-    const [passwordInputDisabled, setPasswordInputDisabled] = useState(true);
-    const [isDataChanged, setDataChanged] = useState(false);
+    const [nameInputDisabled, setNameInputDisabled] = useState<boolean>(true);
+    const [emailInputDisabled, setEmailInputDisabled] = useState<boolean>(true);
+    const [passwordInputDisabled, setPasswordInputDisabled] = useState<boolean>(true);
+    const [isDataChanged, setDataChanged] = useState<boolean>(false);
 
     const onNameIconClick = () => {
         setNameInputDisabled(!nameInputDisabled);
@@ -55,8 +56,9 @@ const Profile = () => {
         setDataChanged(true);
     };
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+        // @ts-ignore TODO to next sprint
         dispatch(updateUser(values.email, values.name, values.password));
         onCancel();
     };
