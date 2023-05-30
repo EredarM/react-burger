@@ -31,19 +31,18 @@ const ForgotPasswordPage = () => {
         [isSecurityCodeSend, navigate]
     );
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        forgotPasswordRequest({
-            "email": values.email
-        })
-            .then(response => {
-                if (response) {
-                    setSecurityCodeSend(true);
-                }
-            })
-            .catch(error =>
-                setPasswordResetErrorMsq(`Ошибка: ${error.message}`)
-            );
+        try {
+            const response = await forgotPasswordRequest({
+                "email": values.email
+            });
+            if (response) {
+                setSecurityCodeSend(true);
+            }
+        } catch (err) {
+            setPasswordResetErrorMsq(`Ошибка: ${err.message}`);
+        }
     };
 
     return (

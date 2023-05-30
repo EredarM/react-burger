@@ -27,20 +27,19 @@ const ResetPasswordPage = () => {
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        resetPasswordRequest({
-            password: values.password,
-            token: values.token
-        })
-            .then(response => {
-                if (response) {
-                    setPasswordReset(true);
-                }
-            })
-            .catch(error =>
-                setPasswordResetErrorMsq(`Ошибка: ${error.message}`)
-            );
+        try {
+            const response = await resetPasswordRequest({
+                password: values.password,
+                token: values.token
+            });
+            if (response) {
+                setPasswordReset(true);
+            }
+        } catch (err) {
+            setPasswordResetErrorMsq(`Ошибка: ${err.message}`)
+        }
     };
 
     React.useEffect(

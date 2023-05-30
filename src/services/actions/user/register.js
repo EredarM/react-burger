@@ -26,7 +26,7 @@ const registerError = (error) => {
     };
 };
 
-export const register = (email, password, name) => (dispatch) => {
+export const register = (email, password, name) => async (dispatch) => {
     dispatch(registerRequest());
 
     const postData = {
@@ -35,14 +35,13 @@ export const register = (email, password, name) => (dispatch) => {
         "name": name
     };
 
-    signUp(postData)
-        .then(response => {
-            setCookie('accessToken', response.accessToken);
-            setCookie('refreshToken', response.refreshToken);
-            dispatch(registerSuccess(response));
-        })
-        .catch(err => {
-            dispatch(registerError(err));
-            alert("Ошибка регистрации");
-        });
+    try {
+        const response = await signUp(postData);
+        setCookie('accessToken', response.accessToken);
+        setCookie('refreshToken', response.refreshToken);
+        dispatch(registerSuccess(response.user));
+    } catch (err) {
+        dispatch(registerError(err));
+        alert("Ошибка регистрации");
+    }
 };

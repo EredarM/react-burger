@@ -61,8 +61,8 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 userData: {
                     ...state.userData,
-                    email: action.data.user.email,
-                    name: action.data.user.name,
+                    email: action.data.email,
+                    name: action.data.name,
                 },
                 userRequest: false,
                 userRequestSuccess: true
@@ -87,8 +87,8 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 userData: {
                     ...state.userData,
-                    email: action.data.user.email,
-                    name: action.data.user.name,
+                    email: action.data.email,
+                    name: action.data.name,
                 },
                 userUpdateRequest: false,
             }
@@ -111,8 +111,8 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userData: {
-                    email: action.data.user.email,
-                    name: action.data.user.name,
+                    email: action.data.email,
+                    name: action.data.name,
                 },
                 loginRequest: false,
                 isAuthUser: true
@@ -137,8 +137,8 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userData: {
-                    email: action.data.user.email,
-                    name: action.data.user.name,
+                    email: action.data.email,
+                    name: action.data.name,
                 },
                 registerRequest: false,
                 isAuthUser: true

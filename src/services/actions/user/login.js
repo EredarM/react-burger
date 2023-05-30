@@ -26,22 +26,20 @@ const loginError = (err) => {
     };
 };
 
-export const login = (email, password) => (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
     dispatch(loginRequest());
 
     const postData = {
         "email": email,
         "password": password
     };
-
-    signIn(postData)
-        .then(response => {
-            setCookie('accessToken', response.accessToken);
-            setCookie('refreshToken', response.refreshToken);
-            dispatch(loginSuccess(response))
-        })
-        .catch(err => {
-            dispatch(loginError(err));
-            alert('Произошла ошибка при входе')
-        });
+    try {
+        const response = await signIn(postData);
+        setCookie('accessToken', response.accessToken);
+        setCookie('refreshToken', response.refreshToken);
+        dispatch(loginSuccess(response.user));
+    } catch (err) {
+        dispatch(loginError(err));
+        alert('Произошла ошибка при входе')
+    }
 };

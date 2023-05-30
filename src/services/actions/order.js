@@ -19,24 +19,25 @@ const addOrderFailed = () => {
     }
 }
 
-export const addOrderModalData = (bun, ingredients) => (dispatch) => {
+export const addOrderModalData = (bun, ingredients) => async (dispatch) => {
     dispatch({
         type: ADD_ORDER
     });
 
     const bunId = bun._id;
-    const ingredientIds = ingredients.map(item => item.data._id)
+    const ingredientIds = ingredients.map(item => item.data._id);
 
     const postData = {
         'ingredients' : [...ingredientIds, bunId]
-    }
+    };
 
-    postIngredients(postData)
-        .then(response => dispatch(addOrderSuccess(response)))
-        .catch(err => {
+    try {
+        const response = await postIngredients(postData);
+        dispatch(addOrderSuccess(response));
+    } catch (err) {
         dispatch(addOrderFailed());
-        alert("Ошибка отправки данных");
-    });
+        alert("Ошибка заказа");
+    }
 };
 
 export const removeOrderModalData = () => {

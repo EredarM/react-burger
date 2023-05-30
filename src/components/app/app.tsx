@@ -21,11 +21,13 @@ import {
 } from "../../utils/route-path";
 
 import global from "../../index.module.css";
+import {AppDispatch} from "../../utils/store";
+import {LogoutPage} from "../../pages/logout-page/logout-page";
 
 
 const Router = () => {
-    const dispatch = useDispatch();
-    const location = useLocation();
+    const dispatch = useDispatch<AppDispatch>();
+    const location = useLocation() as TLocationProps;
     const baseUrl = location.state && location.state.baseUrl;
 
     React.useEffect(
@@ -38,7 +40,9 @@ const Router = () => {
     return (
         <>
             <Routes location={baseUrl || location}>
-                <Route path={rootPath} element={<HomePage/>}/>
+                <Route path={rootPath} element={
+                    <HomePage/>
+                }/>
                 <Route path={profilePath} element={
                     <ProtectedRouteUser
                         isAuthOnly={true}
@@ -59,9 +63,11 @@ const Router = () => {
                         }
                     />
                 }/>
-                <Route path={ingredientByIdPath} element={<IngredientInfo />} />
+                <Route path={ingredientByIdPath} element={
+                    <IngredientInfo />
+                } />
                 <Route path={logoutPath} element={
-                    <ProfilePage/>
+                    <LogoutPage/>
                 }/>
                 <Route path={loginPath} element={
                     <ProtectedRouteUser
