@@ -1,7 +1,12 @@
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 
-export const getElement = (type, imgPath, price, title, removeOnClick) => {
+export const getElement = (
+    type: string,
+    imgPath: string,
+    price: number,
+    title: string,
+    removeOnClick: () => void) => {
     let result;
     switch (type) {
         case 'start':
@@ -37,7 +42,9 @@ export const getElement = (type, imgPath, price, title, removeOnClick) => {
             );
             break;
         default:
-            result = '';
+            result = (
+                <></>
+            );
     }
     return result;
 }

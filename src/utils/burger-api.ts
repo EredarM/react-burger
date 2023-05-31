@@ -10,12 +10,12 @@ import {
     UNKNOWN_ERROR_RU
 } from "../services/static/constant-error";
 import {
+    IUpdateUser,
     TForgotPasswordUser,
     TLogoutUser,
     TRegisterUser,
     TResetPasswordUser,
     TUpdateUser,
-    IUpdateUser,
     TUser
 } from "../../declarations/types";
 
@@ -34,12 +34,10 @@ const RESET_PASSWORD_API = '/password-reset/reset';
 
 
 export async function getIngredients() {
-    const result = await fetch(`${NORMA_API}${INGREDIENTS_API}`);
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    return request(INGREDIENTS_API);
 }
 
-export async function fetchUser(): Promise<TUpdateUser> {
+export async function fetchUser(): Promise<IUpdateUser> {
     function fetchUserRequest(authToken: string): Promise<Response> {
         return fetch(`${NORMA_API}${USER_API}`, {
             method: 'GET',
@@ -53,10 +51,10 @@ export async function fetchUser(): Promise<TUpdateUser> {
     }
 
     const accessToken = getCookie('accessToken');
-    return await securityFetch(fetchUserRequest, accessToken);
+    return await securityRequest(fetchUserRequest, accessToken);
 }
 
-export async function patchUser(body: IUpdateUser): Promise<TUpdateUser> {
+export async function patchUser(body: TUpdateUser): Promise<IUpdateUser> {
     function patchUserRequest(authToken: string): Promise<Response> {
         return fetch(`${NORMA_API}${USER_API}`, {
             method: 'PATCH',
@@ -72,90 +70,83 @@ export async function patchUser(body: IUpdateUser): Promise<TUpdateUser> {
     }
 
     const accessToken = getCookie('accessToken');
-    return await securityFetch(patchUserRequest, accessToken);
+    return await securityRequest(patchUserRequest, accessToken);
 }
 
 export async function postIngredients(body: Array<number>) {
-    const result = await fetch(`${NORMA_API}${ORDER_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    };
+    return request(ORDER_API, options);
 }
 
 export async function signIn(body: TUser) {
-    const result = await fetch(`${NORMA_API}${LOGIN_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    };
+    return request(LOGIN_API, options);
 }
 
 export async function signUp(body: TRegisterUser) {
-    const result = await fetch(`${NORMA_API}${REGISTER_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    };
+    return request(REGISTER_API, options);
 }
 
 export async function signOut(body: TLogoutUser) {
-    const result = await fetch(`${NORMA_API}${LOGOUT_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    };
+    return request(LOGOUT_API, options);
 }
 
 export async function forgotPasswordRequest(body: TForgotPasswordUser) {
-    const result = await fetch(`${NORMA_API}${FORGOT_PASSWORD_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data)
+    };
+    return request(FORGOT_PASSWORD_API, options);
 }
 
 export async function resetPasswordRequest(body: TResetPasswordUser) {
-    const result = await fetch(`${NORMA_API}${RESET_PASSWORD_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-
-    const data = await checkResponse(result);
-    return extractResponse(data)
+    };
+    return request(RESET_PASSWORD_API, options);
 }
 
 async function refreshTokenRequest() {
-    const result = await fetch(`${NORMA_API}${TOKEN_API}`, {
+    const options = {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -164,12 +155,11 @@ async function refreshTokenRequest() {
         body: JSON.stringify({
             token: getCookie('refreshToken')
         })
-    });
-    const data = await checkResponse(result);
-    return extractResponse(data);
+    };
+    return request(TOKEN_API, options);
 }
 
-async function securityFetch(
+async function securityRequest(
     fetchCallback: (authToken: string) => Promise<Response>,
     authToken?: string
 ): Promise<any> {
@@ -180,9 +170,7 @@ async function securityFetch(
     try {
         const result = await fetchCallback(authToken);
         const data = await checkResponse(result);
-        const x = extractResponse(data);
-        console.log(x)
-        return x;
+        return extractResponse(data);
     } catch (err) {
         if (err !== JWT_EXPIRED_ERROR) {
             return err;
@@ -194,18 +182,23 @@ async function securityFetch(
 
         const newAuthToken = getCookie('accessToken');
         if (newAuthToken) {
-            return securityFetch(fetchCallback, newAuthToken);
+            return securityRequest(fetchCallback, newAuthToken);
         }
         return Promise.reject(err);
     }
 }
+
+const request = async (endpoint: string, options?: any): Promise<any> => {
+    return await fetch(`${NORMA_API}${endpoint}`, options)
+        .then(checkResponse)
+        .then(extractResponse);
+};
 
 const checkResponse = (res: Response): Promise<string> => {
     return res.ok ?
         res.json()
         : res.json().then((err) => {
             let result;
-            console.log(err)
             switch (err.message) {
                 case LOGIN_ERROR:
                     result = Promise.reject(LOGIN_ERROR_RU);

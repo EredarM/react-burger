@@ -1,8 +1,10 @@
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag} from "react-dnd";
+import {FC} from "react";
+
+import {IIngredientElement} from "../../../../declarations/types";
 
 import styles from './burger-ingredient-element.module.css';
-import {FC} from "react";
 
 const BurgerIngredientElement: FC<IIngredientElement> = ({onClick, data, count}) => {
     const {_id, type, image, price, name} = data;

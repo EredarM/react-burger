@@ -1,5 +1,5 @@
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, {useRef, useState} from "react";
+import React, {FormEvent, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import styles from './profile.module.css';
@@ -56,7 +56,7 @@ const Profile = () => {
         setDataChanged(true);
     };
 
-    const onSubmitForm = (e: { preventDefault: () => void; }) => {
+    const onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // @ts-ignore TODO to next sprint
         dispatch(updateUser(values.email, values.name, values.password));

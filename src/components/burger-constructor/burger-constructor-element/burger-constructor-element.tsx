@@ -4,11 +4,13 @@ import React, {FC} from "react";
 
 import {removeIngredient, reorderIngredients} from "../../../services/actions/burger-constructor";
 import {getElement} from './burger-constructor-element.util';
+import {IConstructorElement, TDragItem} from "../../../../declarations/types";
 
 //TODO хз как это пофиксить
 // @ts-ignore
 import dotImg from "../../../static/images/Vector.svg";
 import styles from "../burger-constructor.module.css";
+
 
 const BurgerConstructorElement: FC<IConstructorElement> = ({id, index, type, imgPath, price, title}): JSX.Element => {
     const dispatch = useDispatch();

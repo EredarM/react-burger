@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {FormEvent, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -28,7 +28,7 @@ const LoginPage = () => {
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = (e: { preventDefault: () => void; }) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // @ts-ignore TODO to next sprint
         dispatch(login(values.email, values.password));

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
 
@@ -31,7 +31,7 @@ const ForgotPasswordPage = () => {
         [isSecurityCodeSend, navigate]
     );
 
-    const onSubmit = async (e: { preventDefault: () => void; }) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const response = await forgotPasswordRequest({

@@ -2,7 +2,10 @@ import {NavLink} from "react-router-dom";
 import {FC} from "react";
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
+import {IHeaderNavElement} from "../../../../declarations/types";
+
 import styles from './header-nav-element.module.css';
+
 
 const getIcon = (iconType: string): JSX.Element => {
     let result: JSX.Element;

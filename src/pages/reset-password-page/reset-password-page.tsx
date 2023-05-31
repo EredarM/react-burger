@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {FormEvent, useRef, useState} from "react";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
 
@@ -27,7 +27,7 @@ const ResetPasswordPage = () => {
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = async (e: { preventDefault: () => void; }) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const response = await resetPasswordRequest({

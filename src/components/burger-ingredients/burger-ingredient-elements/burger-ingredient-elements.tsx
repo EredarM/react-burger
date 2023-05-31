@@ -1,9 +1,11 @@
 import React, {FC} from "react";
+import {useSelector} from "react-redux";
 
 import BurgerIngredientElement from "../burger-ingredient-element/burger-ingredient-element";
+import {IIngredientElements} from "../../../../declarations/types";
 
 import styles from "./burger-ingredient-elements.module.css";
-import {useSelector} from "react-redux";
+
 
 const BurgerIngredientElements: FC<IIngredientElements> = ({id, headerText, data, onClick}) => {
     // @ts-ignore TODO to next sprint
