@@ -12,7 +12,7 @@ const Modal: FC<IModal> = ({children, title, onClose}) => {
     const modalRoot: any = document.getElementById("react-modals");
 
     const onEscClose = React.useCallback(
-        (evt: { key: string; }) => {
+        (evt: KeyboardEvent) => {
             if (evt.key === "Escape") {
                 onClose();
             }
