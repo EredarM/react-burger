@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
 
@@ -13,8 +13,8 @@ import global from "../../index.module.css";
 const ForgotPasswordPage = () => {
     const navigate = useNavigate();
 
-    const [isSecurityCodeSend, setSecurityCodeSend] = useState(false);
-    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
+    const [isSecurityCodeSend, setSecurityCodeSend] = useState<boolean>(false);
+    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState<string | null>(null);
     const {values, handleChange} = useForm({
         email: ''
     });
@@ -31,19 +31,18 @@ const ForgotPasswordPage = () => {
         [isSecurityCodeSend, navigate]
     );
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        forgotPasswordRequest({
-            "email": values.email
-        })
-            .then(response => {
-                if (response) {
-                    setSecurityCodeSend(true);
-                }
-            })
-            .catch(error =>
-                setPasswordResetErrorMsq(`Ошибка: ${error.message}`)
-            );
+        try {
+            const response = await forgotPasswordRequest({
+                "email": values.email
+            });
+            if (response) {
+                setSecurityCodeSend(true);
+            }
+        } catch (err: any) {
+            setPasswordResetErrorMsq(err);
+        }
     };
 
     return (

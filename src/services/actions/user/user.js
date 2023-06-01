@@ -65,7 +65,7 @@ const userUnauth = () => {
     };
 };
 
-export const updateUser = (email, name, password) => (dispatch) => {
+export const updateUser = (email, name, password) => async (dispatch) => {
     dispatch(userUpdate());
 
     const body = {
@@ -74,28 +74,25 @@ export const updateUser = (email, name, password) => (dispatch) => {
         password: password
     };
 
-    patchUser(body)
-        .then(data => {
-            dispatch(userUpdateSuccess(data));
-        })
-        .catch(err => {
-            dispatch(userUpdateError(err));
-            alert("Ошибка обновления данных пользователя");
-        });
+    try {
+        const response = await patchUser(body);
+        dispatch(userUpdateSuccess(response.user));
+    } catch (err) {
+        dispatch(userUpdateError(err));
+        alert("Ошибка обновления данных пользователя");
+    }
 };
 
-const getUser = () => (dispatch) => {
+const getUser = () => async (dispatch) => {
     dispatch(user());
-
-    fetchUser()
-        .then(data => {
-            dispatch(userSuccess(data));
-            dispatch(userAuth());
-        })
-        .catch(err => {
-            dispatch(userError(err));
-            alert("Ошибка получения данных пользователя");
-        });
+    try {
+        const response = await fetchUser();
+        dispatch(userSuccess(response.user));
+        dispatch(userAuth());
+    } catch (err) {
+        dispatch(userError(err));
+        alert("Ошибка получения данных пользователя");
+    }
 };
 
 export const isUserAuth = () => (dispatch) => {

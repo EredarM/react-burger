@@ -1,17 +1,14 @@
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {FC, ReactElement} from 'react';
+import {useSelector} from "react-redux";
 import {Navigate, useLocation} from "react-router-dom";
 
-import {isUserAuth} from "../../services/actions/user/user";
 import {loginPath, rootPath} from "../../utils/route-path";
 
 
-const ProtectedRouteUser = ({isAuthOnly = false, element}) => {
-    const dispatch = useDispatch();
+const ProtectedRouteUser: FC<{isAuthOnly?: boolean, element: ReactElement}> = ({isAuthOnly = false, element}) => {
     const location = useLocation();
+    // @ts-ignore TODO to next sprint
     const {isAuthUser, isAuthUserChecked} = useSelector(store => store.user);
-
-    useEffect(() => dispatch(isUserAuth()), [dispatch]);
 
     if (!isAuthUserChecked) {
         return null;

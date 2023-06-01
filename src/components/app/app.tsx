@@ -11,26 +11,34 @@ import AppHeader from "../app-header/app-header";
 import IngredientInfo from "../ingredient-info/ingredient-info";
 import {getBurgerIngredients} from "../../services/actions/burger-ingredients";
 import {
-    forgotPasswordPath, ingredientByIdPath,
+    forgotPasswordPath,
+    ingredientByIdPath,
     loginPath,
     logoutPath,
     profileOrdersPath,
     profilePath,
-    registerPath, resetPasswordPath,
+    registerPath,
+    resetPasswordPath,
     rootPath
 } from "../../utils/route-path";
 
 import global from "../../index.module.css";
+import {LogoutPage} from "../../pages/logout-page/logout-page";
+import {TLocationProps} from "../../../declarations/types";
+import {isUserAuth} from "../../services/actions/user/user";
 
 
 const Router = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
+    const location = useLocation() as TLocationProps;
     const baseUrl = location.state && location.state.baseUrl;
 
     React.useEffect(
         () => {
+            // @ts-ignore TODO to next sprint
             dispatch(getBurgerIngredients());
+            // @ts-ignore
+            dispatch(isUserAuth());
         },
         [dispatch]
     );
@@ -38,7 +46,9 @@ const Router = () => {
     return (
         <>
             <Routes location={baseUrl || location}>
-                <Route path={rootPath} element={<HomePage/>}/>
+                <Route path={rootPath} element={
+                    <HomePage/>
+                }/>
                 <Route path={profilePath} element={
                     <ProtectedRouteUser
                         isAuthOnly={true}
@@ -59,9 +69,11 @@ const Router = () => {
                         }
                     />
                 }/>
-                <Route path={ingredientByIdPath} element={<IngredientInfo />} />
+                <Route path={ingredientByIdPath} element={
+                    <IngredientInfo/>
+                }/>
                 <Route path={logoutPath} element={
-                    <ProfilePage/>
+                    <LogoutPage/>
                 }/>
                 <Route path={loginPath} element={
                     <ProtectedRouteUser

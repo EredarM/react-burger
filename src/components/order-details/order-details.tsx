@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 
-import {dataOrderPost} from "../../utils/prop-types";
-
+// @ts-ignore хз чё с этим делать
 import doneImg from '../../static/images/done.svg';
 import styles from './order-details.module.css';
+import {TOrder} from "../../../declarations/types";
 
-const OrderDetails = ({orderData}) => {
+const OrderDetails: FC<TOrder> = ({orderData}) => {
     const { order, success } = orderData;
 
     if (!success) {
@@ -27,7 +27,5 @@ const OrderDetails = ({orderData}) => {
         </div>
     )
 };
-
-OrderDetails.propTypes = dataOrderPost;
 
 export default OrderDetails;

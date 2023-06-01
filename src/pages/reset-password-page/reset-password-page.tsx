@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {FormEvent, useRef, useState} from "react";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
 
@@ -13,10 +13,10 @@ import global from "../../index.module.css";
 const ResetPasswordPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const passRef = useRef();
+    const passRef = useRef<HTMLInputElement>(null);
 
     const [isPasswordReset, setPasswordReset] = useState(false);
-    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState(null);
+    const [passwordResetErrorMsq, setPasswordResetErrorMsq] = useState<string | null>(null);
     const {values, handleChange} = useForm({
         password: '',
         token: ''
@@ -27,20 +27,19 @@ const ResetPasswordPage = () => {
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        resetPasswordRequest({
-            password: values.password,
-            token: values.token
-        })
-            .then(response => {
-                if (response) {
-                    setPasswordReset(true);
-                }
-            })
-            .catch(error =>
-                setPasswordResetErrorMsq(`Ошибка: ${error.message}`)
-            );
+        try {
+            const response = await resetPasswordRequest({
+                password: values.password,
+                token: values.token
+            });
+            if (response) {
+                setPasswordReset(true);
+            }
+        } catch (err: any) {
+            setPasswordResetErrorMsq(err)
+        }
     };
 
     React.useEffect(

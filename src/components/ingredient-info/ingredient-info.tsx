@@ -6,9 +6,11 @@ import React from "react";
 
 const IngredientInfo = () => {
     const params = useParams();
+    // @ts-ignore TODO to next sprint
     const ingredientsData = useSelector(store => store.burgerIngredients.data);
 
     const ingredient = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => ingredientsData.find(item => item._id === params.id),
         [ingredientsData, params]
     );

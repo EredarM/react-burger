@@ -1,22 +1,26 @@
 import {useDispatch} from "react-redux";
-
-import {dataProps2} from "../../../utils/prop-types";
-import {removeIngredient, reorderIngredients} from "../../../services/actions/burger-constructor";
-import styles from "../burger-constructor.module.css";
 import {useDrag, useDrop} from "react-dnd";
-import React from "react";
-import dotImg from "../../../static/images/Vector.svg";
-import {getElement} from './burger-constructor-element.util';
+import React, {FC} from "react";
 
-const BurgerConstructorElement = ({id, index, type, imgPath, price, title}) => {
+import {removeIngredient, reorderIngredients} from "../../../services/actions/burger-constructor";
+import {getElement} from './burger-constructor-element.util';
+import {IConstructorElement, TDragItem} from "../../../../declarations/types";
+
+//TODO хз как это пофиксить
+// @ts-ignore
+import dotImg from "../../../static/images/Vector.svg";
+import styles from "../burger-constructor.module.css";
+
+
+const BurgerConstructorElement: FC<IConstructorElement> = ({id, index, type, imgPath, price, title}): JSX.Element => {
     const dispatch = useDispatch();
     const handleRemoveItem = () => dispatch(removeIngredient(id));
 
-    const dndRef = React.useRef();
+    const dndRef = React.useRef<HTMLLIElement>(null);
 
     const [, dropTargetRef] = useDrop({
         accept: 'ingredient_order',
-        hover(item) {
+        hover(item: TDragItem) {
             const dragItemIndex = item.index;
             const currentItemIndex = index;
 
@@ -25,7 +29,9 @@ const BurgerConstructorElement = ({id, index, type, imgPath, price, title}) => {
             }
 
             dispatch(reorderIngredients(dragItemIndex, currentItemIndex));
-            item.index = currentItemIndex;
+            if (currentItemIndex) {
+                item.index = currentItemIndex;
+            }
         }
     });
 
@@ -41,14 +47,14 @@ const BurgerConstructorElement = ({id, index, type, imgPath, price, title}) => {
         })
     });
 
-    const isIngredient = type === 'middle';
+    const isIngredient: boolean = type === 'middle';
 
     if (isIngredient) {
         dropTargetRef(dndRef);
         dragRef(dndRef);
     }
 
-    const opacity = isDragging ? 0 : 1;
+    const opacity: number = isDragging ? 0 : 1;
 
     return (
         <li className={`${styles.content__li}`} style={{opacity}} ref={dndRef}>
@@ -57,7 +63,5 @@ const BurgerConstructorElement = ({id, index, type, imgPath, price, title}) => {
         </li>
     );
 }
-
-BurgerConstructorElement.propTypes = dataProps2;
 
 export default BurgerConstructorElement;

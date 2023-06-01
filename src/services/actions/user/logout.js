@@ -9,18 +9,16 @@ const logoutSuccess = () => {
     };
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => async (dispatch) => {
     const postData = {
         token: getCookie('refreshToken')
     };
-
-    signOut(postData)
-        .then(() => {
-            deleteCookie('accessToken');
-            deleteCookie('refreshToken');
-            dispatch(logoutSuccess());
-        })
-        .catch(() => {
-            alert('Произошла ошибка при выходе')
-        });
+    try {
+        await signOut(postData)
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
+        dispatch(logoutSuccess());
+    } catch (err) {
+        alert('Произошла ошибка при выходе')
+    }
 };

@@ -8,27 +8,35 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {addOrderModalData, removeOrderModalData} from "../../services/actions/order";
 import {addIngredient} from "../../services/actions/burger-constructor";
+import {TIngredient} from "../../../declarations/types";
 
 import styles from './burger-constructor.module.css';
 import global from '../../index.module.css';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    // @ts-ignore TODO to next sprint
     const orderData = useSelector(state => state.orderReducer.orderData);
+    // @ts-ignore TODO to next sprint
     const userData = useSelector(state => state.user.userData);
 
+    // @ts-ignore TODO to next sprint
     const {bun, ingredients} = useSelector(store => store.burgerConstructor);
+    // @ts-ignore TODO to next sprint
     const ingredientsData = useSelector(store => store.burgerIngredients.data);
 
-    const ingredientsRender = React.useMemo(
+    const ingredientsRender: Array<{ id: string; data: TIngredient; }> = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => ingredients.map(item => ({
             id: item.uniqueId,
+            // @ts-ignore TODO to next sprint
             data: ingredientsData.find(i => i._id === item.itemId)
         })),
         [ingredients, ingredientsData]
     );
 
-    const bunRender = React.useMemo(
+    const bunRender: TIngredient = React.useMemo(
+        // @ts-ignore TODO to next sprint
         () => ingredientsData.find(i => i._id === bun?.itemId),
         [bun, ingredientsData]
     );
@@ -46,6 +54,7 @@ const BurgerConstructor = () => {
             alert("Войдите в систему!");
             return;
         }
+        // @ts-ignore TODO to next sprint
         dispatch(addOrderModalData(bunRender, ingredientsRender))
     };
     const handleCloseOrderModal = () => dispatch(removeOrderModalData());
@@ -111,7 +120,7 @@ const BurgerConstructor = () => {
             </div>
             <div className={styles.bottom}>
                 <div className={`${styles.bottom__priceWrapper} mb-1`}>
-                        <span className={`text text_type_digits-medium`}>{price}</span>
+                    <span className={`text text_type_digits-medium`}>{price}</span>
                     <CurrencyIcon type={'primary'}/>
                 </div>
                 <Button onClick={handleOpenOrderModal} htmlType="button" type="primary" size="medium">

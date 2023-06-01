@@ -9,6 +9,7 @@ import styles from "./home.module.css";
 import global from "../../index.module.css";
 
 const HomePage = () => {
+    // @ts-ignore TODO to next sprint
     const {burgerIngredientsRequestSuccess} = useSelector(store => store.burgerIngredients);
 
     return (

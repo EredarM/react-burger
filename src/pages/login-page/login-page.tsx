@@ -1,57 +1,53 @@
-import React, {useRef} from "react";
+import React, {FormEvent, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import {register} from "../../services/actions/user/register";
+import {login} from "../../services/actions/user/login";
 import {useForm} from "../../hooks/useForm";
-import {loginPath, rootPath} from "../../utils/route-path";
+import {forgotPasswordPath, registerPath, rootPath} from "../../utils/route-path";
 
-import styles from './register-page.module.css';
+import styles from './login-page.module.css';
 import global from "../../index.module.css";
 
 
-const RegisterPage = () => {
-    const {values, handleChange} = useForm({name: '', email: '', password: ''});
-    const {isAuthUser, registerRequestError} = useSelector(store => store.user);
+const LoginPage = () => {
+    // @ts-ignore TODO to next sprint
+    const {isAuthUser, loginRequestError} = useSelector(store => store.user);
+    const {values, handleChange} = useForm({
+        email: '',
+        password: ''
+    });
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const passRef = useRef();
+    const passRef = useRef<HTMLInputElement>(null);
 
     const onIconClick = () => {
         const attr = passRef.current?.type === 'text' ? 'password' : 'text';
         passRef.current?.setAttribute('type', attr);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(register(values.email, values.password, values.name));
+        // @ts-ignore TODO to next sprint
+        dispatch(login(values.email, values.password));
     };
 
     React.useEffect(
         () => {
             isAuthUser && navigate(rootPath, {
-                replace: true
+                replace: true,
+
             });
         },
         [isAuthUser, navigate]
     );
 
     return (
-        <div className={`${global.container} ${styles.register__container}`}>
-            <form className={`${styles.register__form}`} onSubmit={onSubmit}>
-                <h1 className={`text text_type_main-large mb-6`}>Регистрация</h1>
-                <Input
-                    type={'text'}
-                    placeholder={'Имя'}
-                    onChange={e => handleChange(e)}
-                    value={values.name}
-                    name={'name'}
-                    error={false}
-                    size={'default'}
-                    extraClass="mb-6"
-                />
+        <div className={`${global.container} ${styles.login__container}`}>
+            <form className={`${styles.login__form}`} onSubmit={onSubmit}>
+                <h1 className={`text text_type_main-large mb-6`}>Вход</h1>
                 <Input
                     type={'email'}
                     placeholder={'E-mail'}
@@ -76,19 +72,23 @@ const RegisterPage = () => {
                     ref={passRef}
                 />
                 {
-                    registerRequestError
-                    && <p className={`text text_type_main-small`}>{registerRequestError.message}</p>
+                    loginRequestError
+                    && <p className={`text text_type_main-small`}>{loginRequestError.message}</p>
                 }
                 <Button extraClass={`mb-20`} htmlType="submit" type="primary" size="medium">
-                    Зарегистрироваться
+                    Войти
                 </Button>
-                <div className={`text text_type_main-default mb-4 ${styles.register__info_container}`}>
-                    <p>Уже зарегистрированы?</p>
-                    <Link className={styles.register__link} to={loginPath}>Войти</Link>
+                <div className={`text text_type_main-default mb-4 ${styles.login__info_container}`}>
+                    <p>Вы - новый пользователь?</p>
+                    <Link className={styles.login__link} to={registerPath}>Зарегистрироваться</Link>
+                </div>
+                <div className={`text text_type_main-default ${styles.login__info_container}`}>
+                    <p>Забыли пароль?</p>
+                    <Link className={styles.login__link} to={forgotPasswordPath}>Восстановить пароль</Link>
                 </div>
             </form>
         </div>
     );
 };
 
-export default RegisterPage;
+export default LoginPage;

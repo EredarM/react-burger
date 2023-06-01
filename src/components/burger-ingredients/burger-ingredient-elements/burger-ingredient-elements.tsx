@@ -1,34 +1,38 @@
-import React from "react";
-import {dataProps} from "../../../utils/prop-types";
-
-import BurgerIngredientElement from "../burger-ingredient-element/burger-ingredient-element";
-
-import styles from "./burger-ingredient-elements.module.css";
+import React, {FC} from "react";
 import {useSelector} from "react-redux";
 
-const BurgerIngredientElements = ({id, headerText, data, onClick}) => {
+import BurgerIngredientElement from "../burger-ingredient-element/burger-ingredient-element";
+import {IIngredientElements} from "../../../../declarations/types";
+
+import styles from "./burger-ingredient-elements.module.css";
+
+
+const BurgerIngredientElements: FC<IIngredientElements> = ({id, headerText, data, onClick}) => {
+    // @ts-ignore TODO to next sprint
     const ingredients = useSelector(store => store.burgerConstructor);
 
     const ingredientByCount = React.useMemo(
         () => {
             const count = {};
-
+            // @ts-ignore TODO to next sprint
             ingredients.ingredients.forEach(element => {
+                // @ts-ignore TODO to next sprint
                 if (!count[element.itemId]) {
+                    // @ts-ignore TODO to next sprint
                     count[element.itemId] = 0;
                 }
+                // @ts-ignore TODO to next sprint
                 count[element.itemId]++;
             });
 
             if (ingredients.bun) {
+                // @ts-ignore TODO to next sprint
                 count[ingredients.bun.itemId] = 2;
             }
             return count;
         },
         [ingredients]
     );
-
-
 
     return (
         <>
@@ -40,6 +44,7 @@ const BurgerIngredientElements = ({id, headerText, data, onClick}) => {
                         return (
                             <BurgerIngredientElement
                                 key={item._id}
+                                // @ts-ignore TODO to next sprint
                                 count={ingredientByCount[item._id]}
                                 onClick={handleOnClick}
                                 data={item}
@@ -51,7 +56,5 @@ const BurgerIngredientElements = ({id, headerText, data, onClick}) => {
         </>
     );
 }
-
-BurgerIngredientElements.propTypes = dataProps;
 
 export default BurgerIngredientElements;

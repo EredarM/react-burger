@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FC, ReactNode} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -9,18 +9,20 @@ import styles from './profile-page.module.css';
 import global from "../../index.module.css";
 
 
-const ProfilePage = ({element}) => {
+const ProfilePage: FC<{element: ReactNode}> = ({element}) => {
+    // @ts-ignore TODO to next sprint
     const {isAuthUser} = useSelector(store => store.user);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const setActive = ({isActive}) => {
+    const setActive = ({isActive}: {isActive: boolean}) => {
         const extraClasses = `text text_type_main-medium ${styles.item__link}`;
         return (isActive ? `${styles.item__link_active} ` : "text_color_inactive ") + extraClasses;
     };
 
     const onLogoutClick = () => {
+        // @ts-ignore TODO to next sprint
         dispatch(logout());
     };
 

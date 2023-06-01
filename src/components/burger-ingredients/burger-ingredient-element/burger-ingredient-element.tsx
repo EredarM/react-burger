@@ -1,11 +1,12 @@
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag} from "react-dnd";
+import {FC} from "react";
 
-import {dataProps3} from "../../../utils/prop-types";
+import {IIngredientElement} from "../../../../declarations/types";
 
 import styles from './burger-ingredient-element.module.css';
 
-const BurgerIngredientElement = ({onClick, data, count}) => {
+const BurgerIngredientElement: FC<IIngredientElement> = ({onClick, data, count}) => {
     const {_id, type, image, price, name} = data;
 
     const [, dragRef] = useDrag({
@@ -32,7 +33,5 @@ const BurgerIngredientElement = ({onClick, data, count}) => {
         </li>
     );
 }
-
-BurgerIngredientElement.propTypes = dataProps3;
 
 export default BurgerIngredientElement;
